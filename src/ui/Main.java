@@ -12,7 +12,8 @@ public class Main {
 	private static BufferedReader br;
 
 	public Main() {
-		snakesAndLader = new SnakesAndLadders();
+		SnakesAndLadders lm = new SnakesAndLadders(3, 4);
+		System.out.println(lm);
 		br = new BufferedReader(new InputStreamReader(System.in));
 	}
 
