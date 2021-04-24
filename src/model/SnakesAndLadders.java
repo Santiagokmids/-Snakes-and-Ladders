@@ -48,6 +48,7 @@ public class SnakesAndLadders {
 				current.setUp(rowPrevious);
 				rowPrevious.setDown(current);
 			}
+			createNewCol(i, 1+j, current, rowPrevious);
 		}
 	}
 	
