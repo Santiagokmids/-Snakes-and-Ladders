@@ -12,11 +12,8 @@ public class Main {
 	private static BufferedReader br;
 
 	public Main() {
-<<<<<<< HEAD
 		snakesAndLader = new SnakesAndLadders(3, 4);
 		System.out.println(snakesAndLader);
-=======
->>>>>>> 848749ba16b3091084f934245c21a04fdaccd5ad
 		br = new BufferedReader(new InputStreamReader(System.in));
 	}
 
