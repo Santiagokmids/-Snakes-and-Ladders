@@ -12,7 +12,7 @@ public class Main {
 	private static BufferedReader br;
 
 	public Main() {
-		snakesAndLader = new SnakesAndLadders(2, 2);
+		snakesAndLader = new SnakesAndLadders(0, 0);
 		System.out.println(snakesAndLader);
 		br = new BufferedReader(new InputStreamReader(System.in));
 	}
@@ -23,7 +23,7 @@ public class Main {
 	}
 
 	public void startApp() throws IOException{
-		System.out.println("==================================\n            BIENVENIDOS  \n==================================\n");
+		System.out.println("==================================\n           BIENVENIDOS  \n==================================\n");
 		menu();
 	}
 	
@@ -66,7 +66,7 @@ public class Main {
 					selectOption();
 				}
 			}else {
-				System.out.println("\nGracias por usar el programa :D.");
+				System.out.println("\nGracias por usar la aplicacion :D.");
 			}
 			
 		}catch(NumberFormatException nfe) {
@@ -82,25 +82,11 @@ public class Main {
 				+ "\n* SIMBOLOS QUE PUEDE USAR:  |, *, !, O, X, %, $, #, +, &\n");
 		
 		String setting = br.readLine();
-		String settings[] = setting.split(" ");
+		boolean verify = snakesAndLader.splitString(setting);
 		
-		try {
-			int row = Integer.parseInt(settings[0]);
-			int col = Integer.parseInt(settings[1]);
-			int snakes = Integer.parseInt(settings[2]);
-			int ladders = Integer.parseInt(settings[3]);
-			int players = Integer.parseInt(settings[4]);
-			
-			snakesAndLader = new SnakesAndLadders(row, col);
-			
-			String[] symbols = settings[5].split("");
-			snakesAndLader.addSetting(snakes, ladders, players, settings[5]);
-			
-		}catch(NumberFormatException nfe){
-			System.out.println("Ingreso un valor INVALIDO");
+		if(!verify) {
 			selectOpt1();
 		}
-		
 	}
 	
 	public void scores() {

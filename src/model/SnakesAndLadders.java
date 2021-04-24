@@ -269,4 +269,31 @@ public class SnakesAndLadders {
 
 		return searched;
 	}
+	
+	public boolean splitString(String settings) {
+		
+		String setting[] = settings.split("");
+		boolean verify = true;
+		
+		try {
+			
+			int row = Integer.parseInt(setting[0]);
+			int col = Integer.parseInt(setting[2]);
+			int snakes = Integer.parseInt(setting[4]);
+			int ladders = Integer.parseInt(setting[6]);
+			int players = Integer.parseInt(setting[8]);
+
+			setMatrixRows(row);
+			setMatrixCols(col);
+			
+			addSettingSnake(snakes);
+			addSettingLadders(ladders);
+			addSettingPlayers(players, setting);
+			
+		}catch(NumberFormatException nfe){
+			System.out.println("Ingreso un valor INVALIDO");
+			verify = false;
+		}
+		return verify;
+	}
 }
