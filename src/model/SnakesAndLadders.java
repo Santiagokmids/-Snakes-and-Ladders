@@ -19,6 +19,7 @@ public class SnakesAndLadders {
 	private void createNewMatrix() {
 		root = new Node(0,0);
 		createNewRow(0,0,root);
+		asingPosition(0,matrixRows-1,0);
 	}
 	
 	private void createNewRow(int i, int j, Node currentRootRow) {
@@ -60,6 +61,38 @@ public class SnakesAndLadders {
 			firstPlayer = newPlayer;
 		}else {
 			addPlayer(firstPlayer,newPlayer);
+		}
+	}
+	
+	private void asingPosition(int position, int i,int j) {
+		
+		Node newNode = searchNode(i,j);
+		
+		if(newNode != null) {
+			asingNext(newNode,position+1);
+		}
+	}
+	
+	private void asingNext(Node newNode, int position) {
+		
+		newNode.setPosition(position);
+		
+		if(newNode.getNext() != null) {
+			asingNext(newNode.getNext(),position+1);
+		}else if(newNode.getUp() != null){
+			asingPrev(newNode.getUp(),position+1);
+		}
+	}
+	
+	private void asingPrev(Node newNode, int position) {
+		
+		newNode.setPosition(position);
+		
+		if(newNode.getPrevious() != null) {
+			
+			asingPrev(newNode.getPrevious(),position+1);
+		}else  if(newNode.getUp() != null){
+			asingNext(newNode.getUp(),position+1);
 		}
 	}
 	
@@ -215,24 +248,25 @@ public class SnakesAndLadders {
 	}
 	
 	private Node searchNode(Node current, int row, int col) {
-		Node searched;
+		
+		Node searched = null;
+		
 		if(current == null || (current.getRow() == row && current.getCol() == col)) {
 			searched = current;
 		}
 		else {
-			if(current.getRow() <= row) {
-				searched = searchNode(current.getPrevious(), row, col);
+			if(current.getRow() < row) {
+				if(current.getDown() != null) {
+					searched = searchNode(current.getDown(), row, col);
+				}
+			}else if(current.getCol() < col) {
 				
-			}else {
-				searched = searchNode(current.getNext(), row, col);
-			}
-			if(current.getCol() <= col) {
-				searched = searchNode(current.getPrevious(), row, col);
-
-			}else {
-				searched = searchNode(current.getNext(), row, col);
+				if(current.getNext() != null) {
+					searched = searchNode(current.getNext(), row, col);
+				}
 			}
 		}
+
 		return searched;
 	}
 }

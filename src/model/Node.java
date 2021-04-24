@@ -4,6 +4,7 @@ public class Node {
 	
 	private int row;
 	private int col;
+	private int position;
 	private char snake;
 	private char ladder;
 	
@@ -15,6 +16,7 @@ public class Node {
 	public Node(int row, int col) {
 		this.row = row;
 		this.col = col;
+		position = 0;
 	}
 
 	public int getRow() {
@@ -80,8 +82,16 @@ public class Node {
 	public void setLadder(char ladder) {
 		this.ladder = ladder;
 	}
+	
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
+	}
 
 	public String toString() {
-		return "[("+row+","+col+")]";
+		return "["+position+"]";
 	}
 }

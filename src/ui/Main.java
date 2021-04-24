@@ -12,7 +12,7 @@ public class Main {
 	private static BufferedReader br;
 
 	public Main() {
-		snakesAndLader = new SnakesAndLadders(3, 4);
+		snakesAndLader = new SnakesAndLadders(2, 2);
 		System.out.println(snakesAndLader);
 		br = new BufferedReader(new InputStreamReader(System.in));
 	}
