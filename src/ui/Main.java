@@ -89,6 +89,8 @@ public class Main {
 			int players = Integer.parseInt(settings[4]);
 			
 			snakesAndLader = new SnakesAndLadders(row, col);
+			
+			String[] symbols = settings[5].split("");
 			snakesAndLader.addSetting(snakes, ladders, players, settings[5]);
 			
 		}catch(NumberFormatException nfe){
