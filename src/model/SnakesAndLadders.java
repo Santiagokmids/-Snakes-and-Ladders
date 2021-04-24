@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Random;
+
 public class SnakesAndLadders {
 	
 	private Node root;
@@ -100,5 +102,73 @@ public class SnakesAndLadders {
 		String msg = "";
 		
 		return msg;
+	}
+	
+	public void addSettingSnake(int snakes) {
+		
+		Random azarRow = new Random();
+		Random azarCol = new Random();
+		
+		int selectedRow = (int)(azarRow.nextDouble() * getMatrixRows());
+		int selectedCol = (int)(azarCol.nextDouble() * getMatrixCols());
+		
+		Node searched = searchNode(selectedRow, selectedCol);
+		
+		if(searched.getNext() != null && (searched.getPrevious() != null || searched.getUp() != null)){
+			char letter = (char)('A'+searched.getCol());
+			searched.setSnake(letter);
+			char letter2 = (char)('A'+searched.getRow());
+			searched.setSnake(letter2);
+			
+		}else {
+			addSettingSnake(snakes - 1);
+		}
+	}
+	
+	public void addSettingLadders(int ladders) {
+		
+		Random azarRow = new Random();
+		Random azarCol = new Random();
+		
+		int selectedRow = (int)(azarRow.nextDouble() * getMatrixRows());
+		int selectedCol = (int)(azarCol.nextDouble() * getMatrixCols());
+		
+		Node searched = searchNode(selectedRow, selectedCol);
+		
+		if(searched.getNext() != null && (searched.getPrevious() != null || searched.getUp() != null)){
+			char letter = (char)('A'+searched.getCol());
+			searched.setSnake(letter);
+			char letterLadder = (char)('A'+searched.getRow());
+			searched.setLadder(letterLadder);
+			
+		}else {
+			addSettingLadders(ladders - 1);
+		}
+	}
+	
+	public Node searchNode(int row, int col) {
+		return searchNode(root, row, col);
+	}
+	
+	private Node searchNode(Node current, int row, int col) {
+		Node searched;
+		if(current == null || (current.getRow() == row && current.getCol() == col)) {
+			searched = current;
+		}
+		else {
+			if(current.getRow() <= row) {
+				searched = searchNode(current.getPrevious(), row, col);
+				
+			}else {
+				searched = searchNode(current.getNext(), row, col);
+			}
+			if(current.getCol() <= col) {
+				searched = searchNode(current.getPrevious(), row, col);
+
+			}else {
+				searched = searchNode(current.getNext(), row, col);
+			}
+		}
+		return searched;
 	}
 }

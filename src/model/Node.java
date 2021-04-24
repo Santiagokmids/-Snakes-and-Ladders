@@ -4,6 +4,8 @@ public class Node {
 	
 	private int row;
 	private int col;
+	private char snake;
+	private char ladder;
 	
 	private Node next;
 	private Node previous;
@@ -63,6 +65,22 @@ public class Node {
 		this.down = down;
 	}
 	
+	public char getSnake() {
+		return snake;
+	}
+
+	public void setSnake(char snake) {
+		this.snake = snake;
+	}
+
+	public char getLadder() {
+		return ladder;
+	}
+
+	public void setLadder(char ladder) {
+		this.ladder = ladder;
+	}
+
 	public String toString() {
 		return "[("+row+","+col+")]";
 	}
