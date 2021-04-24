@@ -48,6 +48,7 @@ public class SnakesAndLadders {
 				current.setUp(rowPrevious);
 				rowPrevious.setDown(current);
 			}
+			createNewCol(i, 1+j, current, rowPrevious);
 		}
 	}
 	
@@ -172,8 +173,8 @@ public class SnakesAndLadders {
 		if(searched.getNext() != null && (searched.getPrevious() != null || searched.getUp() != null)){
 			char letter = (char)('A'+searched.getCol());
 			searched.setSnake(letter);
-			char letter2 = (char)('A'+searched.getRow());
-			searched.setSnake(letter2);
+			char letterSnake = (char)('A'+searched.getRow());
+			searched.setSnake(letterSnake);
 			
 		}else {
 			addSettingSnake(snakes - 1);
@@ -198,6 +199,14 @@ public class SnakesAndLadders {
 			
 		}else {
 			addSettingLadders(ladders - 1);
+		}
+	}
+	
+	public void addSettingPlayers(int players, String[] symbols) {
+		if(players == 1) {
+			Player player = new Player(null, 0, symbols[players-1], 0);
+		}else {
+			addSettingPlayers(players - 1, symbols);
 		}
 	}
 	
