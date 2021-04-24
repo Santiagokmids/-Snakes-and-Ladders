@@ -12,6 +12,11 @@ public class Main {
 	private static BufferedReader br;
 
 	public Main() {
+<<<<<<< HEAD
+		snakesAndLader = new SnakesAndLadders(3, 4);
+		System.out.println(snakesAndLader);
+=======
+>>>>>>> 848749ba16b3091084f934245c21a04fdaccd5ad
 		br = new BufferedReader(new InputStreamReader(System.in));
 	}
 
@@ -49,7 +54,8 @@ public class Main {
 					break;
 
 				case 2:
-					//metodo mostar posiciones
+					scores();
+					menu();
 					break;
 					
 				case 4:
@@ -98,6 +104,14 @@ public class Main {
 			selectOpt1();
 		}
 		
+	}
+	
+	public void scores() {
+		
+		String message = snakesAndLader.toStringScoreTable();
+		
+		System.out.println("-----------------------------------"
+				+ "\n           PUNTUACIONES\n-----------------------------------\n"+ message +"\n-----------------------------------");
 	}
 }
 
