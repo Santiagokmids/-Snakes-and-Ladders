@@ -6,7 +6,9 @@ public class Node {
 	private int col;
 	private int position;
 	private char snake;
-	private char ladder;
+	private int ladder;
+	
+	String first;
 	
 	private Node next;
 	private Node previous;
@@ -17,6 +19,8 @@ public class Node {
 		this.row = row;
 		this.col = col;
 		position = 0;
+		snake = ' ';
+		ladder = 0;
 	}
 
 	public int getRow() {
@@ -75,11 +79,11 @@ public class Node {
 		this.snake = snake;
 	}
 
-	public char getLadder() {
+	public int getLadder() {
 		return ladder;
 	}
 
-	public void setLadder(char ladder) {
+	public void setLadder(int ladder) {
 		this.ladder = ladder;
 	}
 	

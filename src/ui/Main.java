@@ -12,8 +12,6 @@ public class Main {
 	private static BufferedReader br;
 
 	public Main() {
-		snakesAndLader = new SnakesAndLadders(2, 2);
-		System.out.println(snakesAndLader);
 		br = new BufferedReader(new InputStreamReader(System.in));
 	}
 
@@ -79,7 +77,7 @@ public class Main {
 		System.out.println("\nIngrese los siguientes datos separandolos por espacios:\n"
 				+ "Numero de filas, numero de columnas, numero de serpientes, numero de escaleras, numero de jugadores, simbolos de cada jugador\n"
 				+ "--- Los simbolos de cada jugador van juntos, y si no agrega ninguno, se seleccionaran de forma aleatoria ---\n"
-				+ "\n* SIMBOLOS QUE PUEDE USAR:  |, *, !, O, X, %, $, #, +, &\n");
+				+ "\n* SIMBOLOS QUE PUEDE USAR: *, !, O, X, %, $, #, +, &\n");
 		
 		String setting = br.readLine();
 		String settings[] = setting.split(" ");
@@ -92,9 +90,10 @@ public class Main {
 			int players = Integer.parseInt(settings[4]);
 			
 			snakesAndLader = new SnakesAndLadders(row, col);
+			System.out.println("\n"+snakesAndLader);
 			
 			String[] symbols = settings[5].split("");
-			snakesAndLader.addSetting(snakes, ladders, players, settings[5]);
+			//snakesAndLader.addSetting(snakes, ladders, players, settings[5]);
 			
 		}catch(NumberFormatException nfe){
 			System.out.println("Ingreso un valor INVALIDO");

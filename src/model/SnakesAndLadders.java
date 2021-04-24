@@ -5,7 +5,7 @@ import java.util.Random;
 public class SnakesAndLadders {
 	
 	private Node root;
-	private Player firstPlayer;
+	private BestPlayers firstPlayer;
 	
 	private int matrixRows;
 	private int matrixCols;
@@ -53,9 +53,9 @@ public class SnakesAndLadders {
 		}
 	}
 	
-	public void addPlayer(String name, long score, String symbol, int movement) {
+	public void addPlayer(String name, long score, String symbol) {
 		
-		Player newPlayer = new Player(name,score,symbol,movement);
+		BestPlayers newPlayer = new BestPlayers(name,score,symbol);
 		
 		if(firstPlayer == null) {
 			firstPlayer = newPlayer;
@@ -96,7 +96,7 @@ public class SnakesAndLadders {
 		}
 	}
 	
-	private void addPlayer(Player current, Player newPlayer) {
+	private void addPlayer(BestPlayers current, BestPlayers newPlayer) {
 		
 		if(newPlayer.getScore() <= current.getScore()){
 			if(current.getNext() == null) {
@@ -173,7 +173,7 @@ public class SnakesAndLadders {
 		return message;
 	}
 	
-	private String toStringScores(Player player) {
+	private String toStringScores(BestPlayers player) {
 		String message = "";
 		
 		if(player != null) {
@@ -203,14 +203,14 @@ public class SnakesAndLadders {
 		
 		Node searched = searchNode(selectedRow, selectedCol);
 		
-		if(searched.getNext() != null && (searched.getPrevious() != null || searched.getUp() != null)){
+		if(searched.getPosition() != 1 && searched.getPosition() != (matrixCols*matrixRows) && snakes != 0 && searched.getSnake() == ' ' && searched.getLadder() == 0){
 			char letter = (char)('A'+searched.getCol());
 			searched.setSnake(letter);
 			char letterSnake = (char)('A'+searched.getRow());
 			searched.setSnake(letterSnake);
-			
-		}else {
 			addSettingSnake(snakes - 1);
+		}else {
+			addSettingSnake(snakes);
 		}
 	}
 	
@@ -219,27 +219,19 @@ public class SnakesAndLadders {
 		Random azarRow = new Random();
 		Random azarCol = new Random();
 		
-		int selectedRow = (int)(azarRow.nextDouble() * getMatrixRows());
-		int selectedCol = (int)(azarCol.nextDouble() * getMatrixCols());
+		int selectedRow = (int)(azarRow.nextDouble() * matrixRows);
+		int selectedCol = (int)(azarCol.nextDouble() * matrixCols);
 		
 		Node searched = searchNode(selectedRow, selectedCol);
 		
-		if(searched.getNext() != null && (searched.getPrevious() != null || searched.getUp() != null)){
-			char letter = (char)('A'+searched.getCol());
-			searched.setSnake(letter);
-			char letterLadder = (char)('A'+searched.getRow());
+		if(searched.getPosition() != 1 && searched.getPosition() != (matrixCols*matrixRows) && ladders != 0 && searched.getSnake() == ' ' && searched.getLadder() == 0){
+			int letter = (ladders);
+			searched.setLadder(letter);
+			int letterLadder = (ladders);
 			searched.setLadder(letterLadder);
-			
-		}else {
 			addSettingLadders(ladders - 1);
-		}
-	}
-	
-	public void addSettingPlayers(int players, String[] symbols) {
-		if(players == 1) {
-			Player player = new Player(null, 0, symbols[players-1], 0);
 		}else {
-			addSettingPlayers(players - 1, symbols);
+			addSettingSnake(ladders);
 		}
 	}
 	
