@@ -202,8 +202,10 @@ public class SnakesAndLadders {
 	}
 	
 	public void addSettingPlayers(int players, String[] symbols) {
-		if() {
-			
+		if(players == 1) {
+			Player player = new Player(null, 0, symbols[players-1], 0);
+		}else {
+			addSettingPlayers(players - 1, symbols);
 		}
 	}
 	
