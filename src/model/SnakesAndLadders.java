@@ -54,9 +54,9 @@ public class SnakesAndLadders {
 	}
 
 	public void addPlayer(String name, int row, int col, int snakes, int ladders, int players, long score, String symbol, String otherPlayers) {
-		
+
 		BestPlayers newPlayer = new BestPlayers(name,row,col,snakes,ladders,players,score,symbol,otherPlayers);
-		
+
 		if(firstPlayer == null) {
 			firstPlayer = newPlayer;
 		}else {
@@ -293,8 +293,10 @@ public class SnakesAndLadders {
 
 			}
 		}catch(NumberFormatException nfe){
-				verify = false;
+			verify = false;
 		}
+		
+		
 		return verify;
 	}
 
@@ -311,7 +313,7 @@ public class SnakesAndLadders {
 			}
 		}
 	}
-	
+
 	private void addSettingPlayers(Player first,String[] settings,int index) {
 		if(index <= settings.length) {
 
@@ -324,7 +326,7 @@ public class SnakesAndLadders {
 		selectSymbols(index);
 
 		if(index == settings.length) {
-			
+
 		}
 		else{
 			Node first = getFirst();
@@ -342,7 +344,7 @@ public class SnakesAndLadders {
 		int selectedSymbol = (int)(azarSymbols.nextDouble() * 9);
 
 		if(index > 0) {
-			
+
 			switch(selectedSymbol) {
 			case 1:
 				symbol = "*";
@@ -388,25 +390,25 @@ public class SnakesAndLadders {
 				symbol = "&";
 				verify = searchSymbols(symbol,9);
 				break;
-				
+
 			}
-			
+
 			Node first = getFirst();
-			
+
 			if(first.getFirst() == null){
 				first.setFirst(new Player(symbol));
 				selectSymbols(first.getFirst().getNext(),index - 1);
-				
+
 			}				
 		}
 		return symbol;
 	}
-	
+
 	private boolean searchSymbols(String symbol, int index) {
-		
+
 		boolean verify = true; 
 		Node first = getFirst();
-		
+
 		if(!first.getFirst().getSymbol().equals(symbol) && index > 0) {
 			searchSymbols(symbol, index - 1);
 			verify = false;

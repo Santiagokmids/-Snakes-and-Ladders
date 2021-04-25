@@ -7,6 +7,11 @@ import java.io.InputStreamReader;
 import model.SnakesAndLadders;
 
 public class Menu {
+	
+	public final static String MENU = "menu";
+	public final static String SIMUL = "simul";
+	public final static String NUM ="num";
+	
 	private static BufferedReader br;
 	private SnakesAndLadders snakesAndLader;
 	
@@ -82,6 +87,17 @@ public class Menu {
 		if(!verify) {
 			System.out.println("Ingreso un valor INVALIDO");
 			selectOpt1();
+		}else {
+			gamePlay();
+		}
+	}
+	
+	public void gamePlay() throws IOException {
+		
+		String nextLine = br.readLine();
+		
+		if(nextLine.equalsIgnoreCase(NUM)) {
+			System.out.println(snakesAndLader.toString());
 		}
 	}
 
