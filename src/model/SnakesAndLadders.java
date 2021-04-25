@@ -321,22 +321,12 @@ public class SnakesAndLadders {
 	}
 
 	public void addSymbols(int index) {
-		selectSymbols(index);
-
-		if(index == settings.length) {
-			
-		}
-		else{
-			Node first = getFirst();
-			if(first.getFirst() == null) {
-				addSettingPlayers(first.getFirst(),settings, index + 1);
-			}
-		}
+		selectSymbols(getFirst(),getFirst().getFirst(),index);
 	}
 
-	private String selectSymbols(Player player,int index) {
+	private String selectSymbols(Node first,Player player,int index) {
 		String symbol = "";
-		boolean verify;
+		int verify = 0;
 
 		Random azarSymbols = new Random();
 		int selectedSymbol = (int)(azarSymbols.nextDouble() * 9);
@@ -391,25 +381,22 @@ public class SnakesAndLadders {
 				
 			}
 			
-			Node first = getFirst();
-			
-			if(first.getFirst() == null){
+			if(first.getFirst() == null && verify > 0){
 				first.setFirst(new Player(symbol));
-				selectSymbols(first.getFirst().getNext(),index - 1);
-				
+				selectSymbols(first,first.getFirst().getNext(),index - 1);
 			}				
 		}
 		return symbol;
 	}
 	
-	private boolean searchSymbols(String symbol, int index) {
+	private int searchSymbols(String symbol, int index) {
 		
-		boolean verify = true; 
+		int verify = 0; 
 		Node first = getFirst();
 		
 		if(!first.getFirst().getSymbol().equals(symbol) && index > 0) {
 			searchSymbols(symbol, index - 1);
-			verify = false;
+			verify++;
 		}
 		return verify;
 	}
