@@ -198,19 +198,22 @@ public class SnakesAndLadders {
 		Random azarRow = new Random();
 		Random azarCol = new Random();
 
-		int selectedRow = (int)(azarRow.nextDouble() * getMatrixRows());
-		int selectedCol = (int)(azarCol.nextDouble() * getMatrixCols());
-
+		int selectedRow = (int)(azarRow.nextDouble() * (matrixRows-1));
+		int selectedCol = (int)(azarCol.nextDouble() * (matrixCols-1));
+		
 		Node searched = searchNode(selectedRow, selectedCol);
-
-		if(searched.getPosition() != 1 && searched.getPosition() != (matrixCols*matrixRows) && snakes != 0 && searched.getSnake() == ' ' && searched.getLadder() == 0){
+		
+		if(searched.getPosition() != 1 && searched.getPosition() != (matrixCols*matrixRows) && snakes > 0 && searched.getLadder() == 0 && searched.getSnake() == ' '){
+			
 			char letter = (char)('A'+searched.getCol());
 			searched.setSnake(letter);
 			char letterSnake = (char)('A'+searched.getRow());
 			searched.setSnake(letterSnake);
 			addSettingSnake(snakes - 1);
-		}else {
-			addSettingSnake(snakes);
+		}else{
+			if(snakes > 0) {
+				addSettingSnake(snakes);
+			}
 		}
 	}
 
@@ -274,6 +277,10 @@ public class SnakesAndLadders {
 			int snakes = Integer.parseInt(setting[4]);
 			int ladders = Integer.parseInt(setting[6]);
 			int players = Integer.parseInt(setting[8]);
+			
+			matrixRows = row;
+			matrixCols = col;
+			createNewMatrix();
 
 			if(players <= 9) {
 				int index = 10;
@@ -285,9 +292,6 @@ public class SnakesAndLadders {
 					addSymbols(index-players);
 				}
 
-				setMatrixRows(row);
-				setMatrixCols(col);
-
 				addSettingSnake(snakes);
 				addSettingLadders(ladders);
 
@@ -295,8 +299,8 @@ public class SnakesAndLadders {
 		}catch(NumberFormatException nfe){
 			verify = false;
 		}
-		
-		
+
+
 		return verify;
 	}
 
@@ -323,22 +327,13 @@ public class SnakesAndLadders {
 	}
 
 	public void addSymbols(int index) {
-		selectSymbols(index);
 
-		if(index == settings.length) {
-
-		}
-		else{
-			Node first = getFirst();
-			if(first.getFirst() == null) {
-				addSettingPlayers(first.getFirst(),settings, index + 1);
-			}
-		}
+		selectSymbols(getFirst(),getFirst().getFirst(),index);
 	}
 
-	private String selectSymbols(Player player,int index) {
+	private String selectSymbols(Node first,Player player,int index) {
 		String symbol = "";
-		boolean verify;
+		int verify = 0;
 
 		Random azarSymbols = new Random();
 		int selectedSymbol = (int)(azarSymbols.nextDouble() * 9);
@@ -393,25 +388,22 @@ public class SnakesAndLadders {
 
 			}
 
-			Node first = getFirst();
-
-			if(first.getFirst() == null){
+			if(first.getFirst() == null && verify > 0){
 				first.setFirst(new Player(symbol));
-				selectSymbols(first.getFirst().getNext(),index - 1);
-
+				selectSymbols(first,first.getFirst().getNext(),index - 1);
 			}				
 		}
 		return symbol;
 	}
 
-	private boolean searchSymbols(String symbol, int index) {
+	private int searchSymbols(String symbol, int index) {
 
-		boolean verify = true; 
+		int verify = 0; 
 		Node first = getFirst();
 
 		if(!first.getFirst().getSymbol().equals(symbol) && index > 0) {
 			searchSymbols(symbol, index - 1);
-			verify = false;
+			verify++;
 		}
 		return verify;
 	}

@@ -96,7 +96,17 @@ public class Node {
 	}
 
 	public String toString() {
-		return "["+position+"]";
+		
+		String message = "";
+		
+		if(snake != ' ') {
+			message = "["+position+snake+"]";
+		}else if(ladder != 0) {
+			message = "["+position+"-"+ladder+"]";
+		}else {
+			message = "["+position+"]";
+		}
+		return message;
 	}
 
 	public Player getFirst() {

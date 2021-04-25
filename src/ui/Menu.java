@@ -17,7 +17,6 @@ public class Menu {
 	
 	public Menu() throws IOException {
 		snakesAndLader = new SnakesAndLadders(0, 0);
-		System.out.println(snakesAndLader);
 		br = new BufferedReader(new InputStreamReader(System.in));
 		startApp();
 	}
