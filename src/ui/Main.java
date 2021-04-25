@@ -79,7 +79,7 @@ public class Main {
 		System.out.println("\nIngrese los siguientes datos separandolos por espacios:\n"
 				+ "Numero de filas, numero de columnas, numero de serpientes, numero de escaleras, numero de jugadores, simbolos de cada jugador\n"
 				+ "--- Los simbolos de cada jugador van juntos, y si no agrega ninguno, se seleccionaran de forma aleatoria ---\n"
-				+ "\n* SIMBOLOS QUE PUEDE USAR:  |, *, !, O, X, %, $, #, +, &\n");
+				+ "\n* SIMBOLOS QUE PUEDE USAR: *, !, O, X, %, $, #, +, &\n");
 		
 		String setting = br.readLine();
 		boolean verify = snakesAndLader.splitString(setting);
