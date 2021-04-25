@@ -274,6 +274,9 @@ public class SnakesAndLadders {
 			int snakes = Integer.parseInt(setting[4]);
 			int ladders = Integer.parseInt(setting[6]);
 			int players = Integer.parseInt(setting[8]);
+			
+			setMatrixRows(row);
+			setMatrixCols(col);
 
 			if(players <= 9) {
 				int index = 10;
@@ -284,9 +287,6 @@ public class SnakesAndLadders {
 				}else if(setting.length == 9) {
 					addSymbols(index-players);
 				}
-
-				setMatrixRows(row);
-				setMatrixCols(col);
 
 				addSettingSnake(snakes);
 				addSettingLadders(ladders);
