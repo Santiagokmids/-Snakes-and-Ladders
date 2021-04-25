@@ -8,7 +8,6 @@ public class Player {
 	private int movement;
 	
 	public Player(String symbol) {
-		
 		this.symbol = symbol;
 		movement = 0;
 	}

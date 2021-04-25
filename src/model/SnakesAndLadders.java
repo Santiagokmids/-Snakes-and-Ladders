@@ -53,10 +53,10 @@ public class SnakesAndLadders {
 		}
 	}
 
-	public void addPlayer(String name, long score, String symbol) {
-
-		BestPlayers newPlayer = new BestPlayers(name,score,symbol);
-
+	public void addPlayer(String name, int row, int col, int snakes, int ladders, int players, long score, String symbol, String otherPlayers) {
+		
+		BestPlayers newPlayer = new BestPlayers(name,row,col,snakes,ladders,players,score,symbol,otherPlayers);
+		
 		if(firstPlayer == null) {
 			firstPlayer = newPlayer;
 		}else {
