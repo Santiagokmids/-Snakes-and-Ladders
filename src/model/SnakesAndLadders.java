@@ -10,7 +10,7 @@ public class SnakesAndLadders {
 	private int matrixRows;
 	private int matrixCols;
 
-	private int verify = 0;
+	private static int verify = 0;
 
 	public SnakesAndLadders(int matrixRows, int matrixCols) {
 		this.matrixRows = matrixRows;
@@ -215,45 +215,49 @@ public class SnakesAndLadders {
 
 		String setting[] = settings.split("");
 		boolean verify = true;
+		
+		if(setting.length >= 8) {
+			
+			try {
 
-		try {
+				int row = Integer.parseInt(setting[0]);
+				int col = Integer.parseInt(setting[2]);
+				int snakes = Integer.parseInt(setting[4]);
+				int ladders = Integer.parseInt(setting[6]);
+				int players = Integer.parseInt(setting[8]);
 
-			int row = Integer.parseInt(setting[0]);
-			int col = Integer.parseInt(setting[2]);
-			int snakes = Integer.parseInt(setting[4]);
-			int ladders = Integer.parseInt(setting[6]);
-			int players = Integer.parseInt(setting[8]);
+				if(snakes+ladders < ((row*col)-2)/2) {
+					matrixRows = row;
+					matrixCols = col;
+					createNewMatrix();
 
-			if(snakes+ladders < ((row*col)-2)/2) {
-				matrixRows = row;
-				matrixCols = col;
-				createNewMatrix();
+					if(players <= 9) {
+						int index = 10;
 
-				if(players <= 9) {
-					int index = 10;
+						if(players == (settings.length() - index)) {
+							addSettingPlayers(getFirst().getFirst(),setting, index);
 
-					if(players == (settings.length() - index)) {
-						addSettingPlayers(getFirst().getFirst(),setting, index);
+						}else if(setting.length == 9) {
+							addSymbols(index-players);
+						}
 
-					}else if(setting.length == 9) {
-						addSymbols(index-players);
+						int cont = 1;
+
+						insertValuePlayer(getFirst().getFirst(),players,cont);
+
+						addSettingSnake(snakes,0);
+						addSettingLadders(ladders);
+
 					}
-
-					int cont = 1;
-
-					insertValuePlayer(getFirst().getFirst(),players,cont);
-
-					addSettingSnake(snakes,0);
-					addSettingLadders(ladders);
-
+				}else {
+					verify = false;
 				}
-			}else {
+			}catch(NumberFormatException nfe){
 				verify = false;
 			}
-		}catch(NumberFormatException nfe){
+		}else {
 			verify = false;
 		}
-
 		return verify;
 	}
 
@@ -269,8 +273,11 @@ public class SnakesAndLadders {
 
 		if(index == 10 && settings.length > index) {
 			getFirst().setFirst(new Player(settings[index]));
-			getFirst().getFirst().setNext(new Player(settings[index + 1]));
-			addSettingPlayers(getFirst().getFirst().getNext(), settings, index + 2);
+			
+			if(settings.length > 11) {
+				getFirst().getFirst().setNext(new Player(settings[index + 1]));
+				addSettingPlayers(getFirst().getFirst().getNext(), settings, index + 2);
+			}
 
 		}else if(index == 10) {
 			getFirst().setFirst(new Player(settings[index]));
@@ -293,77 +300,101 @@ public class SnakesAndLadders {
 
 		Random azarSymbols = new Random();
 		int selectedSymbol = (int)(azarSymbols.nextDouble() * 9);
+		int cont = 0;
 
 		if(index > 0) {
 
 			switch(selectedSymbol) {
 			case 1:
+				verify = 0;
 				symbol = "*";
-				searchSymbols(symbol, 9);
+				cont = searchSymbols(first.getFirst(),symbol, 9);
 				break;
 
 			case 2:
+				verify = 0;
 				symbol = "!";
-				searchSymbols(symbol, 9);
+				cont = searchSymbols(first.getFirst(),symbol, 9);
 				break;
 
 			case 3:
+				verify = 0;
 				symbol = "O";
-				searchSymbols(symbol, 9);
+				cont = searchSymbols(first.getFirst(),symbol, 9);
 				break;
 
 			case 4:
+				verify = 0;
 				symbol = "X";
-				searchSymbols(symbol, 9);
+				cont = searchSymbols(first.getFirst(),symbol, 9);
 				break;
 
 			case 5:
+				verify = 0;
 				symbol = "%";
-				searchSymbols(symbol, 9);
+				cont = searchSymbols(first.getFirst(),symbol, 9);
 				break;
 
 			case 6:
+				verify = 0;
 				symbol = "$";
-				searchSymbols(symbol, 9);
+				cont = searchSymbols(first.getFirst(),symbol, 9);
 				break;
 
 			case 7:
+				verify = 0;
 				symbol = "#";
-				searchSymbols(symbol, 9);
+				cont = searchSymbols(first.getFirst(),symbol, 9);
 				break;
 
 			case 8:
+				verify = 0;
 				symbol = "+";
-				searchSymbols(symbol, 9);
+				cont = searchSymbols(first.getFirst(),symbol, 9);
 				break;
 
 			case 9:
+				verify = 0;
 				symbol = "&";
-				searchSymbols(symbol, 9);
+				cont = searchSymbols(first.getFirst(),symbol, 9);
 				break;
-
 			}
 
-			if(first.getFirst() == null && verify == 9){
+			if(player == null && 9 == cont && verify > 0) {
+				if(first.getFirst().getNext() == null) {
+					asignSymbol(first.getFirst(), index, symbol);
+					
+				}else {
+					asignSymbol(player, index, symbol);
+				}
+				
+			}else if(player == null && 9 == cont && verify == 0) {
 				first.setFirst(new Player(symbol));
-				selectSymbols(first,player.getNext(),index - 1);
-
+				selectSymbols(first,getFirst().getFirst().getNext(),index - 1);
+				
 			}else if(index > 0){
-				player.setNext(new Player(symbol));
-				selectSymbols(first,player.getNext(),index - 1);
+				selectSymbols(first,player,index);
 			}
 		}
 		return symbol;
 	}
-
-	private void searchSymbols(String symbol, int index) {
-
-		Node first = getFirst();
-
-		if(!first.getFirst().getSymbol().equals(symbol) && index > 0) {
-			searchSymbols(symbol, index - 1);
-			verify+=1;
+	
+	private void asignSymbol(Player player, int index, String symbol) {
+		if(player.getNext() == null) {
+			Player current = new Player(symbol);
+			player.setNext(current);
+			selectSymbols(getFirst(),player.getNext(), index-1);
 		}
+	}
+
+	private int searchSymbols(Player player,String symbol, int index) {
+		
+		if(player != null && !player.getSymbol().equals(symbol) && index > 0) {
+			searchSymbols(player.getNext(),symbol, index - 1);
+			verify++;
+			index--;
+		}
+		return index + verify;
 	}
 
 	public String movePlayer(Player current) {
