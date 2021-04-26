@@ -10,6 +10,8 @@ public class SnakesAndLadders {
 	private int matrixRows;
 	private int matrixCols;
 
+	private int verify = 0;
+
 	public SnakesAndLadders(int matrixRows, int matrixCols) {
 		this.matrixRows = matrixRows;
 		this.matrixCols = matrixCols;
@@ -112,36 +114,36 @@ public class SnakesAndLadders {
 			}
 		}
 	}
-	
+
 	public void addSettingSnake(int snakes, int i) {
-		
+
 		int selectedRow = (int)Math.floor(Math.random()*matrixRows);
 		int selectedCol = (int)Math.floor(Math.random()*matrixCols);
-		
+
 		Node searched = searchNode(selectedRow, selectedCol);
-		
+
 		if(searched.getPosition() != 1 && searched.getPosition() != (matrixCols*matrixRows) && snakes > 0 && searched.getLadder() == 0 && searched.getSnake() == ' '){
-			
+
 			char letter = (char)('A'+i);
 			searched.setSnake(letter);
-			
+
 			addSecondSnake(searched,selectedRow);
-			
+
 			addSettingSnake(snakes - 1, i+1);
 		}else if(snakes > 0){
-				addSettingSnake(snakes,i);
+			addSettingSnake(snakes,i);
 		}
 	}
-	
+
 	public void addSecondSnake(Node ladder, int row) {
-		
+
 		int selectedRow = (int)Math.floor(Math.random()*(matrixRows-row));
 		int selectedCol = (int)Math.floor(Math.random()*matrixCols);
-		
+
 		Node searched = searchNode(selectedRow, selectedCol);
-		
+
 		if(searched.getRow() != row && searched.getPosition() != 1 && searched.getPosition() != (matrixCols*matrixRows) && searched.getSnake() == ' ' && searched.getLadder() == 0){
-			
+
 			searched.setSnake(ladder.getSnake());
 		}else {
 			addSecondSnake(ladder,row);
@@ -149,7 +151,7 @@ public class SnakesAndLadders {
 	}
 
 	public void addSettingLadders(int ladders) {
-		
+
 		int selectedRow = (int)Math.floor(Math.random()*matrixRows);
 		int selectedCol = (int)Math.floor(Math.random()*matrixCols);
 
@@ -158,24 +160,24 @@ public class SnakesAndLadders {
 		if(searched.getPosition() != 1 && searched.getPosition() != (matrixCols*matrixRows) && ladders != 0 && searched.getSnake() == ' ' && searched.getLadder() == 0){
 			int letter = (ladders);
 			searched.setLadder(letter);
-			
+
 			addSecondladders(searched,selectedRow);
-			
+
 			addSettingLadders(ladders - 1);
 		}else if(ladders > 0){
 			addSettingLadders(ladders);
 		}
 	}
-	
+
 	private void addSecondladders(Node ladder, int row) {
-		
+
 		int selectedRow = (int)Math.floor(Math.random()*(matrixRows-row));
 		int selectedCol = (int)Math.floor(Math.random()*matrixCols);
-		
+
 		Node searched = searchNode(selectedRow, selectedCol);
-		
+
 		if(searched.getRow() != row && searched.getPosition() != 1 && searched.getPosition() != (matrixCols*matrixRows) && searched.getSnake() == ' ' && searched.getLadder() == 0){
-			
+
 			searched.setLadder(ladder.getLadder());
 		}else {
 			addSecondladders(ladder,row);
@@ -213,7 +215,7 @@ public class SnakesAndLadders {
 
 		String setting[] = settings.split("");
 		boolean verify = true;
-		
+
 		try {
 
 			int row = Integer.parseInt(setting[0]);
@@ -221,7 +223,7 @@ public class SnakesAndLadders {
 			int snakes = Integer.parseInt(setting[4]);
 			int ladders = Integer.parseInt(setting[6]);
 			int players = Integer.parseInt(setting[8]);
-			
+
 			if(snakes+ladders < ((row*col)-2)/2) {
 				matrixRows = row;
 				matrixCols = col;
@@ -230,15 +232,15 @@ public class SnakesAndLadders {
 				if(players <= 9) {
 					int index = 10;
 
-					if(players == ((setting.length + 1) - index)) {
-						addSettingPlayers(setting, index);
+					if(players == (settings.length() - index)) {
+						addSettingPlayers(getFirst().getFirst(),setting, index);
 
 					}else if(setting.length == 9) {
 						addSymbols(index-players);
 					}
-					
+
 					int cont = 1;
-					
+
 					insertValuePlayer(getFirst().getFirst(),players,cont);
 
 					addSettingSnake(snakes,0);
@@ -254,34 +256,30 @@ public class SnakesAndLadders {
 
 		return verify;
 	}
-	
+
 	private void insertValuePlayer(Player current,int i,int cont) {
-		
+
 		if(current != null && cont <= i) {
 			current.setPosition(cont);
 			insertValuePlayer(current.getNext(), i, cont++);
 		}
 	}
 
-	public void addSettingPlayers(String[] settings, int index) {
+	private void addSettingPlayers(Player first,String[] settings,int index) {
 
-		if(index == settings.length) {
-			Node first = getFirst(); 
-			first.setFirst(new Player(settings[index]));
+		if(index == 10 && settings.length > index) {
+			getFirst().setFirst(new Player(settings[index]));
+			getFirst().getFirst().setNext(new Player(settings[index + 1]));
+			addSettingPlayers(getFirst().getFirst().getNext(), settings, index + 2);
+
+		}else if(index == 10) {
+			getFirst().setFirst(new Player(settings[index]));
 		}
 		else{
-			Node first = getFirst();
-			if(first.getFirst() != null) {
-				addSettingPlayers(first.getFirst(),settings, index + 1);
+			if(first.getNext() == null && index <= settings.length - 1) {
+				first.setNext(new Player(settings[index]));
+				addSettingPlayers(first.getNext(),settings, index + 1);
 			}
-		}
-	}
-
-	private void addSettingPlayers(Player first,String[] settings,int index) {
-		if(index <= settings.length) {
-
-			first.setNext(new Player(settings[index]));
-			addSettingPlayers(first.getNext(),settings, index + 1);
 		}
 	}
 
@@ -292,7 +290,6 @@ public class SnakesAndLadders {
 
 	private String selectSymbols(Node first,Player player,int index) {
 		String symbol = "";
-		int verify = 0;
 
 		Random azarSymbols = new Random();
 		int selectedSymbol = (int)(azarSymbols.nextDouble() * 9);
@@ -302,88 +299,90 @@ public class SnakesAndLadders {
 			switch(selectedSymbol) {
 			case 1:
 				symbol = "*";
-				verify = searchSymbols(symbol,9);
+				searchSymbols(symbol, 9);
 				break;
 
 			case 2:
 				symbol = "!";
-				verify = searchSymbols(symbol,9);
+				searchSymbols(symbol, 9);
 				break;
 
 			case 3:
 				symbol = "O";
-				verify = searchSymbols(symbol,9);
+				searchSymbols(symbol, 9);
 				break;
 
 			case 4:
 				symbol = "X";
-				verify = searchSymbols(symbol,9);
+				searchSymbols(symbol, 9);
 				break;
 
 			case 5:
 				symbol = "%";
-				verify = searchSymbols(symbol,9);
+				searchSymbols(symbol, 9);
 				break;
 
 			case 6:
 				symbol = "$";
-				verify = searchSymbols(symbol,9);
+				searchSymbols(symbol, 9);
 				break;
 
 			case 7:
 				symbol = "#";
-				verify = searchSymbols(symbol,9);
+				searchSymbols(symbol, 9);
 				break;
 
 			case 8:
 				symbol = "+";
-				verify = searchSymbols(symbol,9);
+				searchSymbols(symbol, 9);
 				break;
 
 			case 9:
 				symbol = "&";
-				verify = searchSymbols(symbol,9);
+				searchSymbols(symbol, 9);
 				break;
 
 			}
 
-			if(first.getFirst() == null && verify > 0){
+			if(first.getFirst() == null && verify == 9){
 				first.setFirst(new Player(symbol));
-				selectSymbols(first,first.getFirst().getNext(),index - 1);
-			}				
+				selectSymbols(first,player.getNext(),index - 1);
+
+			}else if(index > 0){
+				player.setNext(new Player(symbol));
+				selectSymbols(first,player.getNext(),index - 1);
+			}
 		}
 		return symbol;
 	}
 
-	private int searchSymbols(String symbol, int index) {
+	private void searchSymbols(String symbol, int index) {
 
-		int verify = 0; 
 		Node first = getFirst();
 
 		if(!first.getFirst().getSymbol().equals(symbol) && index > 0) {
 			searchSymbols(symbol, index - 1);
-			verify++;
+			verify+=1;
 		}
-		return verify;
 	}
-	
+
 	public String movePlayer(Player current) {
-		
+
 		String message = "";
-		
+
 		int die = random();
-		
+
 		message = "El jugador "+current.getSymbol()+" ha lanzado el dado y obtuvo el puntaje "+die;
-		
+
 		move(current,die);
-		
+
 		return message;
 	}
-	
+
 	private void move(Player current, int die) {
 		Node first = move(current,getFirst().getRow(),getFirst().getRow());
 	}
-	
+
 	private Node move(Player current, int i,int j) {
 
 		Node newNode = getFirst();
@@ -391,7 +390,7 @@ public class SnakesAndLadders {
 		if(newNode != null) {
 			next(current,newNode);
 		}
-		
+
 		return newNode;
 	}
 
@@ -408,7 +407,7 @@ public class SnakesAndLadders {
 
 	private void prev(Player current, Node newNode) {
 
-		
+
 
 		if(newNode.getPrevious() != null) {
 
@@ -417,27 +416,27 @@ public class SnakesAndLadders {
 			next(current,newNode.getUp());
 		}
 	}
-	
+
 	private Player searchPlayer(Player current, Node newNode) {
-		
+
 		Player player = null;
-		
+
 		if(newNode.getFirst() != null && newNode.getFirst() == current) {
-			
+
 			player = current;
 		}else {
 			if(current.getNext() != null) {
 				searchPlayer(current.getNext(),newNode);
 			}
 		}
-		
+
 		return player;
 	}
-	
+
 	public int random() {
-		
+
 		int random = (int) Math.floor(Math.random()*6+1);
-		
+
 		return random;
 	}
 
@@ -522,6 +521,6 @@ public class SnakesAndLadders {
 	}
 
 	private Node getFirst() {
-		return searchNode(matrixRows, 0);
+		return searchNode(matrixRows - 1, 0);
 	}
 }
