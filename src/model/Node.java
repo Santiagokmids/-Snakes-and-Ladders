@@ -14,6 +14,8 @@ public class Node {
 	private Node up;
 	private Node down;
 	
+	private String symbols = "";
+	
 	public Node(int row, int col) {
 		this.row = row;
 		this.col = col;
@@ -103,6 +105,8 @@ public class Node {
 			message = "["+position+snake+"]";
 		}else if(ladder != 0) {
 			message = "["+position+ladder+"]";
+		}else if(first != null){
+			message = "["+position+getSymbols(first)+"]";
 		}else {
 			message = "["+position+"]";
 		}
@@ -111,6 +115,15 @@ public class Node {
 
 	public Player getFirst() {
 		return first;
+	}
+	
+	private String getSymbols(Player player) {
+
+		if(player != null) {
+			symbols += player.getSymbol();
+			getSymbols(player.getNext());
+		}
+		return symbols;
 	}
 
 	public void setFirst(Player first) {

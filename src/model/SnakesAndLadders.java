@@ -9,6 +9,8 @@ public class SnakesAndLadders {
 
 	private int matrixRows;
 	private int matrixCols;
+	
+	private int verify = 0;
 
 	public SnakesAndLadders(int matrixRows, int matrixCols) {
 		this.matrixRows = matrixRows;
@@ -223,9 +225,9 @@ public class SnakesAndLadders {
 
 			if(players <= 9) {
 				int index = 10;
-
-				if(players == ((setting.length + 1) - index)) {
-					addSettingPlayers(setting, index);
+				
+				if(players == (settings.length() - index)) {
+					addSettingPlayers(getFirst().getFirst(),setting, index);
 
 				}else if(setting.length == 9) {
 					addSymbols(index-players);
@@ -243,25 +245,21 @@ public class SnakesAndLadders {
 		return verify;
 	}
 
-	public void addSettingPlayers(String[] settings, int index) {
+	private void addSettingPlayers(Player first,String[] settings,int index) {
 
-		if(index == settings.length) {
-			Node first = getFirst(); 
-			first.setFirst(new Player(settings[index]));
+		if(index == 10 && settings.length > index) {
+			getFirst().setFirst(new Player(settings[index]));
+			getFirst().getFirst().setNext(new Player(settings[index + 1]));
+			addSettingPlayers(getFirst().getFirst().getNext(), settings, index + 2);
+			
+		}else if(index == 10) {
+			getFirst().setFirst(new Player(settings[index]));
 		}
 		else{
-			Node first = getFirst();
-			if(first.getFirst() != null) {
-				addSettingPlayers(first.getFirst(),settings, index + 1);
+			if(first.getNext() == null && index <= settings.length - 1) {
+				first.setNext(new Player(settings[index]));
+				addSettingPlayers(first.getNext(),settings, index + 1);
 			}
-		}
-	}
-
-	private void addSettingPlayers(Player first,String[] settings,int index) {
-		if(index <= settings.length) {
-
-			first.setNext(new Player(settings[index]));
-			addSettingPlayers(first.getNext(),settings, index + 1);
 		}
 	}
 
@@ -272,7 +270,6 @@ public class SnakesAndLadders {
 
 	private String selectSymbols(Node first,Player player,int index) {
 		String symbol = "";
-		int verify = 0;
 
 		Random azarSymbols = new Random();
 		int selectedSymbol = (int)(azarSymbols.nextDouble() * 9);
@@ -282,69 +279,71 @@ public class SnakesAndLadders {
 			switch(selectedSymbol) {
 			case 1:
 				symbol = "*";
-				verify = searchSymbols(symbol,9);
+				searchSymbols(symbol, 9);
 				break;
 
 			case 2:
 				symbol = "!";
-				verify = searchSymbols(symbol,9);
+				searchSymbols(symbol, 9);
 				break;
 
 			case 3:
 				symbol = "O";
-				verify = searchSymbols(symbol,9);
+				searchSymbols(symbol, 9);
 				break;
 
 			case 4:
 				symbol = "X";
-				verify = searchSymbols(symbol,9);
+				searchSymbols(symbol, 9);
 				break;
 
 			case 5:
 				symbol = "%";
-				verify = searchSymbols(symbol,9);
+				searchSymbols(symbol, 9);
 				break;
 
 			case 6:
 				symbol = "$";
-				verify = searchSymbols(symbol,9);
+				searchSymbols(symbol, 9);
 				break;
 
 			case 7:
 				symbol = "#";
-				verify = searchSymbols(symbol,9);
+				searchSymbols(symbol, 9);
 				break;
 
 			case 8:
 				symbol = "+";
-				verify = searchSymbols(symbol,9);
+				searchSymbols(symbol, 9);
 				break;
 
 			case 9:
 				symbol = "&";
-				verify = searchSymbols(symbol,9);
+				searchSymbols(symbol, 9);
 				break;
 
 			}
 
-			if(first.getFirst() == null && verify > 0){
+			if(first.getFirst() == null && verify == 9){
 				first.setFirst(new Player(symbol));
-				selectSymbols(first,first.getFirst().getNext(),index - 1);
-			}				
+				selectSymbols(first,player.getNext(),index - 1);
+				
+			}else if(index > 0){
+				player.setNext(new Player(symbol));
+				selectSymbols(first,player.getNext(),index - 1);
+			}
 		}
 		return symbol;
 	}
 
-	private int searchSymbols(String symbol, int index) {
+	private void searchSymbols(String symbol, int index) {
 
-		int verify = 0; 
 		Node first = getFirst();
 
 		if(!first.getFirst().getSymbol().equals(symbol) && index > 0) {
 			searchSymbols(symbol, index - 1);
-			verify++;
+			verify+=1;
 		}
-		return verify;
 	}
 
 	public Node getRoot() {
@@ -428,6 +427,6 @@ public class SnakesAndLadders {
 	}
 
 	private Node getFirst() {
-		return searchNode(matrixRows, 0);
+		return searchNode(matrixRows - 1, 0);
 	}
 }
