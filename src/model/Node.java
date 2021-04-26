@@ -102,7 +102,7 @@ public class Node {
 		if(snake != ' ') {
 			message = "["+position+snake+"]";
 		}else if(ladder != 0) {
-			message = "["+position+"-"+ladder+"]";
+			message = "["+position+ladder+"]";
 		}else {
 			message = "["+position+"]";
 		}

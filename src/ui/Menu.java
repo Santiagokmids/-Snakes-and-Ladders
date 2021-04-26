@@ -95,8 +95,16 @@ public class Menu {
 		
 		String nextLine = br.readLine();
 		
-		if(nextLine.equalsIgnoreCase(NUM)) {
+		if(nextLine.isEmpty()) {
 			System.out.println(snakesAndLader.toString());
+			gamePlay();
+		}else if(nextLine.equalsIgnoreCase(NUM)) {
+			System.out.println(snakesAndLader.toString());
+			gamePlay();
+		}else if(nextLine.equalsIgnoreCase(SIMUL)) {
+			System.out.println("Simulacion");
+		}else if(nextLine.equalsIgnoreCase(MENU)) {
+			menu();
 		}
 	}
 

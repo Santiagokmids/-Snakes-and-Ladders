@@ -15,6 +15,4 @@ public class Main {
 	public Menu getMenu() {
 		return menu;
 	}
-
 }
-

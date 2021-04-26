@@ -112,87 +112,7 @@ public class SnakesAndLadders {
 			}
 		}
 	}
-
-	public Node getRoot() {
-		return root;
-	}
-
-	public void setRoot(Node root) {
-		this.root = root;
-	}
-
-	public int getMatrixRows() {
-		return matrixRows;
-	}
-
-	public void setMatrixRows(int matrixRows) {
-		this.matrixRows = matrixRows;
-	}
-
-	public int getMatrixCols() {
-		return matrixCols;
-	}
-
-	public void setMatrixCols(int matrixCols) {
-		this.matrixCols = matrixCols;
-	}
-
-	public String toString() {
-		String msg;
-		msg = toStringRow(root);
-		return msg;
-	}
-
-	private String toStringRow(Node firstRow) {
-		String msg = "";
-		if(firstRow!=null) {
-			msg = toStringCol(firstRow) + "\n";
-			msg += toStringRow(firstRow.getDown());
-		}
-		return msg;
-	}
-
-	private String toStringCol(Node current) {
-		String msg = "";
-		if(current!=null) {
-			msg = current.toString();
-			msg += toStringCol(current.getNext());
-		}
-		return msg;
-	}
-
-	public String toStringScoreTable() {
-		String message;
-
-		if(firstPlayer != null) {
-			message = toStringScores(firstPlayer);
-		}else {
-			message = "---No hay ningun puntaje todavia---";
-		}
-
-		return message;
-	}
-
-	private String toStringScores(BestPlayers player) {
-		String message = "";
-
-		if(player != null) {
-			message = player.toString();
-
-			if(player.getNext() != null) {
-				message += "\n" + toStringScores(player.getNext());
-			}
-		}
-
-		return message;
-	}
-
-	public String toString2() {
-		String msg = "";
-
-		return msg;
-	}
-
+	
 	public void addSettingSnake(int snakes) {
 
 		Random azarRow = new Random();
@@ -222,7 +142,7 @@ public class SnakesAndLadders {
 		Random azarRow = new Random();
 		Random azarCol = new Random();
 
-		int selectedRow = (int)(azarRow.nextDouble() * matrixRows);
+		int selectedRow = (int)(azarRow.nextDouble() * (matrixRows));
 		int selectedCol = (int)(azarCol.nextDouble() * matrixCols);
 
 		Node searched = searchNode(selectedRow, selectedCol);
@@ -230,11 +150,30 @@ public class SnakesAndLadders {
 		if(searched.getPosition() != 1 && searched.getPosition() != (matrixCols*matrixRows) && ladders != 0 && searched.getSnake() == ' ' && searched.getLadder() == 0){
 			int letter = (ladders);
 			searched.setLadder(letter);
-			int letterLadder = (ladders);
-			searched.setLadder(letterLadder);
+			
+			addSecondladders(searched,selectedRow);
+			
 			addSettingLadders(ladders - 1);
+		}else if(ladders > 0){
+			addSettingLadders(ladders);
+		}
+	}
+	
+	private void addSecondladders(Node ladder, int row) {
+		
+		Random azarRow = new Random();
+		Random azarCol = new Random();
+		
+		int selectedRow = (int)(azarRow.nextDouble() * row);
+		int selectedCol = (int)(azarCol.nextDouble() * matrixCols);
+		
+		Node searched = searchNode(selectedRow, selectedCol);
+		
+		if(searched.getPosition() != 1 && searched.getPosition() != (matrixCols*matrixRows) && searched.getSnake() == ' ' && searched.getLadder() == 0){
+			
+			searched.setLadder(ladder.getLadder());
 		}else {
-			addSettingSnake(ladders);
+			addSecondladders(ladder,row);
 		}
 	}
 
@@ -406,6 +345,86 @@ public class SnakesAndLadders {
 			verify++;
 		}
 		return verify;
+	}
+
+	public Node getRoot() {
+		return root;
+	}
+
+	public void setRoot(Node root) {
+		this.root = root;
+	}
+
+	public int getMatrixRows() {
+		return matrixRows;
+	}
+
+	public void setMatrixRows(int matrixRows) {
+		this.matrixRows = matrixRows;
+	}
+
+	public int getMatrixCols() {
+		return matrixCols;
+	}
+
+	public void setMatrixCols(int matrixCols) {
+		this.matrixCols = matrixCols;
+	}
+
+	public String toString() {
+		String msg;
+		msg = toStringRow(root);
+		return msg;
+	}
+
+	private String toStringRow(Node firstRow) {
+		String msg = "";
+		if(firstRow!=null) {
+			msg = toStringCol(firstRow) + "\n";
+			msg += toStringRow(firstRow.getDown());
+		}
+		return msg;
+	}
+
+	private String toStringCol(Node current) {
+		String msg = "";
+		if(current!=null) {
+			msg = current.toString();
+			msg += toStringCol(current.getNext());
+		}
+		return msg;
+	}
+
+	public String toStringScoreTable() {
+		String message;
+
+		if(firstPlayer != null) {
+			message = toStringScores(firstPlayer);
+		}else {
+			message = "---No hay ningun puntaje todavia---";
+		}
+
+		return message;
+	}
+
+	private String toStringScores(BestPlayers player) {
+		String message = "";
+
+		if(player != null) {
+			message = player.toString();
+
+			if(player.getNext() != null) {
+				message += "\n" + toStringScores(player.getNext());
+			}
+		}
+
+		return message;
+	}
+
+	public String toString2() {
+		String msg = "";
+
+		return msg;
 	}
 
 	private Node getFirst() {
