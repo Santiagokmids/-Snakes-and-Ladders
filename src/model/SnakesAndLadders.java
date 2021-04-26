@@ -237,7 +237,7 @@ public class SnakesAndLadders {
 						if(players == (settings.length() - index)) {
 							addSettingPlayers(getFirst().getFirst(),setting, index);
 
-						}else if(setting.length == 9) {
+						}else if(setting.length <= 9) {
 							addSymbols(index-players);
 						}
 
@@ -360,7 +360,8 @@ public class SnakesAndLadders {
 				break;
 			}
 
-			if(player == null && 9 == cont && verify > 0) {
+			if(9 == cont && verify > 0) {
+				
 				if(first.getFirst().getNext() == null) {
 					asignSymbol(first.getFirst(), index, symbol);
 					
@@ -368,19 +369,16 @@ public class SnakesAndLadders {
 					asignSymbol(player, index, symbol);
 				}
 				
-			}else if(player == null && 9 == cont && verify == 0) {
+			}else if(9 == cont && verify == 0) {
 				first.setFirst(new Player(symbol));
 				selectSymbols(first,getFirst().getFirst().getNext(),index - 1);
-				
-			}else if(index > 0){
-				selectSymbols(first,player,index);
 			}
 		}
 		return symbol;
 	}
 	
 	private void asignSymbol(Player player, int index, String symbol) {
-		if(player.getNext() == null) {
+		if(player.getNext() == null && index > 0) {
 			Player current = new Player(symbol);
 			player.setNext(current);
 			selectSymbols(getFirst(),player.getNext(), index-1);
@@ -394,6 +392,7 @@ public class SnakesAndLadders {
 			verify++;
 			index--;
 		}
+		
 		return index + verify;
 	}
 
