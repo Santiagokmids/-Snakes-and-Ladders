@@ -72,6 +72,7 @@ public class Menu {
 			System.out.println("Ingrese un numero como opcion");
 			selectOption();
 		}
+		br.close();
 	}
 
 	public void selectOpt1() throws IOException {
@@ -84,7 +85,7 @@ public class Menu {
 		boolean verify = snakesAndLader.splitString(setting);
 
 		if(!verify) {
-			System.out.println("Ingreso un valor INVALIDO o hay demasiadas serpientes y/o esacaleras para el tablero");
+			System.out.println("Ingreso un valor INVALIDO");
 			selectOpt1();
 		}else {
 			gamePlay();
@@ -105,6 +106,9 @@ public class Menu {
 			System.out.println("Simulacion");
 		}else if(nextLine.equalsIgnoreCase(MENU)) {
 			menu();
+		}else {
+			System.out.println("Ingreso una opcion invalida, ingrese nuevamente");
+			gamePlay();
 		}
 	}
 
