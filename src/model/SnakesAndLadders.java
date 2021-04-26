@@ -114,12 +114,9 @@ public class SnakesAndLadders {
 	}
 	
 	public void addSettingSnake(int snakes) {
-
-		Random azarRow = new Random();
-		Random azarCol = new Random();
-
-		int selectedRow = (int)(azarRow.nextDouble() * (matrixRows-1));
-		int selectedCol = (int)(azarCol.nextDouble() * (matrixCols-1));
+		
+		int selectedRow = (int)Math.floor(Math.random()*matrixRows);
+		int selectedCol = (int)Math.floor(Math.random()*matrixCols);
 		
 		Node searched = searchNode(selectedRow, selectedCol);
 		
@@ -127,23 +124,34 @@ public class SnakesAndLadders {
 			
 			char letter = (char)('A'+searched.getCol());
 			searched.setSnake(letter);
-			char letterSnake = (char)('A'+searched.getRow());
-			searched.setSnake(letterSnake);
+			
+			addSecondSnake(searched,selectedRow);
+			
 			addSettingSnake(snakes - 1);
-		}else{
-			if(snakes > 0) {
+		}else if(snakes > 0){
 				addSettingSnake(snakes);
-			}
+		}
+	}
+	
+	public void addSecondSnake(Node ladder, int row) {
+		
+		int selectedRow = (int)Math.floor(Math.random()*(matrixRows-row));
+		int selectedCol = (int)Math.floor(Math.random()*matrixCols);
+		
+		Node searched = searchNode(selectedRow, selectedCol);
+		
+		if(searched.getRow() != row && searched.getPosition() != 1 && searched.getPosition() != (matrixCols*matrixRows) && searched.getSnake() == ' ' && searched.getLadder() == 0){
+			
+			searched.setSnake(ladder.getSnake());
+		}else {
+			addSecondSnake(ladder,row);
 		}
 	}
 
 	public void addSettingLadders(int ladders) {
-
-		Random azarRow = new Random();
-		Random azarCol = new Random();
-
-		int selectedRow = (int)(azarRow.nextDouble() * (matrixRows));
-		int selectedCol = (int)(azarCol.nextDouble() * matrixCols);
+		
+		int selectedRow = (int)Math.floor(Math.random()*matrixRows);
+		int selectedCol = (int)Math.floor(Math.random()*matrixCols);
 
 		Node searched = searchNode(selectedRow, selectedCol);
 
@@ -161,15 +169,12 @@ public class SnakesAndLadders {
 	
 	private void addSecondladders(Node ladder, int row) {
 		
-		Random azarRow = new Random();
-		Random azarCol = new Random();
-		
-		int selectedRow = (int)(azarRow.nextDouble() * row);
-		int selectedCol = (int)(azarCol.nextDouble() * matrixCols);
+		int selectedRow = (int)Math.floor(Math.random()*(matrixRows-row));
+		int selectedCol = (int)Math.floor(Math.random()*matrixCols);
 		
 		Node searched = searchNode(selectedRow, selectedCol);
 		
-		if(searched.getPosition() != 1 && searched.getPosition() != (matrixCols*matrixRows) && searched.getSnake() == ' ' && searched.getLadder() == 0){
+		if(searched.getRow() != row && searched.getPosition() != 1 && searched.getPosition() != (matrixCols*matrixRows) && searched.getSnake() == ' ' && searched.getLadder() == 0){
 			
 			searched.setLadder(ladder.getLadder());
 		}else {
