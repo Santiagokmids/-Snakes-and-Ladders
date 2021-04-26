@@ -84,7 +84,7 @@ public class Menu {
 		boolean verify = snakesAndLader.splitString(setting);
 
 		if(!verify) {
-			System.out.println("Ingreso un valor INVALIDO");
+			System.out.println("Ingreso un valor INVALIDO o hay demasiadas serpientes y/o esacaleras para el tablero");
 			selectOpt1();
 		}else {
 			gamePlay();
