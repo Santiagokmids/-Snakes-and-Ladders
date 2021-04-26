@@ -380,53 +380,131 @@ public class SnakesAndLadders {
 	}
 
 	private void move(Player current, int die) {
-		Node first = move(current,getFirst().getRow(),getFirst().getRow());
-	}
-
-	private Node move(Player current, int i,int j) {
-
-		Node newNode = getFirst();
-
-		if(newNode != null) {
-			next(current,newNode);
-		}
-
-		return newNode;
-	}
-
-	private void next(Player current, Node newNode) {
-
-		Player player = searchPlayer(current,newNode);
-
-		if(newNode.getNext() != null) {
-			next(current,newNode.getNext());
-		}else if(newNode.getUp() != null){
-			prev(current,newNode.getUp());
+		
+		Node node = searchNode(current);
+		
+		Player player = move(current);
+		
+		if(player != null && node != null) {
+			movePlayerNode(player, (node.getPosition()+die));
 		}
 	}
-
-	private void prev(Player current, Node newNode) {
-
-
-
-		if(newNode.getPrevious() != null) {
-
-			prev(current,newNode.getPrevious());
-		}else  if(newNode.getUp() != null){
-			next(current,newNode.getUp());
+	
+	private void movePlayerNode(Player player, int position) {
+		movePlayerNode(getFirst(),player,position);
+	}
+	
+	private void movePlayerNode(Node current, Player player, int position) {
+		
+		if(current.getPosition() == position) {
+			if(current.getFirst() == null) {
+				current.setFirst(player);
+			}else {
+				player.setNext(current.getFirst());
+				current.setFirst(player);
+			}
 		}
 	}
+	
+	private Node searchNode(Player current) {
 
-	private Player searchPlayer(Player current, Node newNode) {
+		Node baseNode = getFirst();
+		Node searched = null;
+
+		if(baseNode != null) {
+			searched = nextNode(current,baseNode);
+		}
+
+		return searched;
+	}
+
+	private Node nextNode(Player current, Node baseNode) {
+
+		Player player = searchPlayer(current,baseNode);
+		Node searched = null;
+		
+		if(player != null) {
+			searched = baseNode;
+		}else if(baseNode.getNext() != null && player == null) {
+			searched = nextNode(current,baseNode.getNext());
+		}else if(baseNode.getUp() != null && player == null){
+			searched = prevNode(current,baseNode.getUp());
+		}
+		
+		return searched;
+	}
+
+	private Node prevNode(Player current, Node baseNode) {
+
+		Player player = searchPlayer(current,baseNode);
+		Node searched = null;
+		
+		if(player != null) {
+			searched = baseNode;
+		}else if(baseNode.getPrevious() != null && player == null) {
+			searched = prevNode(current,baseNode.getPrevious());
+		}else  if(baseNode.getUp() != null && player == null){
+			searched = nextNode(current,baseNode.getUp());
+		}
+		
+		return searched;
+	}
+
+	private Player move(Player current) {
+
+		Node baseNode = getFirst();
+		Player player = null;
+
+		if(baseNode != null) {
+			player = next(current,baseNode);
+		}
+
+		return player;
+	}
+
+	private Player next(Player current, Node baseNode) {
+
+		Player player = searchPlayer(current,baseNode);
+
+		if(baseNode.getNext() != null && player == null) {
+			player = next(current,baseNode.getNext());
+		}else if(baseNode.getUp() != null && player == null){
+			player = prev(current,baseNode.getUp());
+		}
+		
+		return player;
+	}
+
+	private Player prev(Player current, Node baseNode) {
+
+		Player player = searchPlayer(current,baseNode);
+
+		if(baseNode.getPrevious() != null && player == null) {
+			player = prev(current,baseNode.getPrevious());
+		}else  if(baseNode.getUp() != null && player == null){
+			player = next(current,baseNode.getUp());
+		}
+		
+		return player;
+	}
+
+	private Player searchPlayer(Player current, Node baseNode) {
 
 		Player player = null;
 
-		if(newNode.getFirst() != null && newNode.getFirst() == current) {
-
+		if(baseNode.getFirst() != null && baseNode.getFirst() == current) {
+			
 			player = current;
+			
+			if(baseNode.getFirst().getNext() == null) {
+				baseNode.setFirst(null);
+			}else {
+				baseNode.setFirst(baseNode.getFirst().getNext());
+			}
+			
 		}else {
 			if(current.getNext() != null) {
-				searchPlayer(current.getNext(),newNode);
+				searchPlayer(current.getNext(),baseNode);
 			}
 		}
 
