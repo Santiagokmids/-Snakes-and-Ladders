@@ -430,9 +430,23 @@ public class SnakesAndLadders {
 			if(current.getFirst() == null) {
 				current.setFirst(player);
 			}else {
-				player.setNext(current.getFirst());
-				current.setFirst(player);
+				moveInOrder(current,current.getFirst(),player);
 			}
+		}
+	}
+	
+	private void moveInOrder(Node node, Player current, Player player) {
+		
+		if(current.getPosition() < player.getPosition()) {
+			if(current.getNext() != null) {
+				moveInOrder(node,current.getNext(),player);
+			}else {
+				current.setNext(player);
+			}
+		}else {
+			
+			node.setFirst(player);
+			player.setNext(current);
 		}
 	}
 	
@@ -532,10 +546,6 @@ public class SnakesAndLadders {
 				baseNode.setFirst(baseNode.getFirst().getNext());
 			}
 			
-		}else {
-			if(current.getNext() != null) {
-				searchPlayer(current.getNext(),baseNode);
-			}
 		}
 
 		return player;
