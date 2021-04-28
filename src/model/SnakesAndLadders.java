@@ -214,7 +214,7 @@ public class SnakesAndLadders {
 	public boolean splitString(String settings) {
 
 		String setting[] = settings.split("");
-		boolean verify = true;
+		boolean stop = true;
 		
 		if(setting.length >= 8) {
 			
@@ -232,13 +232,24 @@ public class SnakesAndLadders {
 					createNewMatrix();
 
 					if(players <= 9) {
-						int index = 10;
+						int index = 9;
 
-						if(players == (settings.length() - index)) {
-							addSettingPlayers(getFirst().getFirst(),setting, index);
-
-						}else if(setting.length <= 9) {
+						if(players == ((settings.length() - 1) - index) && setting.length > 10 && setting[9].equals(" ")) {
+							verifySymbols(setting, settings.length()-1);
+							
+							if(verify == 0) {
+								index = 10;
+								addSettingPlayers(getFirst().getFirst(),setting, index);
+								
+							}else {
+								stop = false;
+							}
+							
+						}else if(setting.length == 9) {
 							addSymbols(index-players);
+							
+						}else {
+							stop = false;
 						}
 
 						int cont = 1;
@@ -248,17 +259,25 @@ public class SnakesAndLadders {
 						addSettingSnake(snakes,0);
 						addSettingLadders(ladders);
 
+					}else {
+						stop = false;
 					}
 				}else {
-					verify = false;
+					stop = false;
 				}
 			}catch(NumberFormatException nfe){
-				verify = false;
+				stop = false;
 			}
 		}else {
-			verify = false;
+			stop = false;
 		}
-		return verify;
+		return stop;
+	}
+	
+	private void verifySymbols(String[] setting,int players) {
+		if(players >= 10 && setting[players].equals(setting[players - 1])) {
+			verify++;
+		}
 	}
 
 	private void insertValuePlayer(Player current,int i,int cont) {
@@ -360,37 +379,42 @@ public class SnakesAndLadders {
 				break;
 			}
 
-			if(9 == cont && verify > 0) {
+			if(verify == 0) {
+				asignSymbol(player, index, symbol);
 				
-				if(first.getFirst().getNext() == null) {
-					asignSymbol(first.getFirst(), index, symbol);
-					
-				}else {
-					asignSymbol(player, index, symbol);
-				}
-				
-			}else if(9 == cont && verify == 0) {
-				first.setFirst(new Player(symbol));
-				selectSymbols(first,getFirst().getFirst().getNext(),index - 1);
+			}else {
+				selectSymbols(first,getFirst().getFirst().getNext(),index);
 			}
 		}
 		return symbol;
 	}
 	
 	private void asignSymbol(Player player, int index, String symbol) {
-		if(player.getNext() == null && index > 0) {
+		
+		if(getFirst().getFirst() == null) {
 			Player current = new Player(symbol);
-			player.setNext(current);
-			selectSymbols(getFirst(),player.getNext(), index-1);
+			getFirst().setFirst(current);
+			selectSymbols(getFirst(),getFirst().getFirst(), index-1);
+			
+		}else {
+			if(index > 0 ) {
+				searchNext(player, symbol);
+				selectSymbols(getFirst(),player.getNext(), index-1);
+			}
+		}
+	}
+
+	public void searchNext(Player player, String symbol) {
+		if(player.getNext() == null) {
+			player.setNext(new Player(symbol));
 		}
 	}
 
 	private int searchSymbols(Player player,String symbol, int index) {
 		
-		if(player != null && !player.getSymbol().equals(symbol) && index > 0) {
-			searchSymbols(player.getNext(),symbol, index - 1);
+		if(player != null && player.getSymbol().equals(symbol) && index > 0) {
 			verify++;
-			index--;
+			searchSymbols(player.getNext(),symbol, index - 1);
 		}
 		
 		return index + verify;
