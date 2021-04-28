@@ -112,6 +112,23 @@ public class Node {
 		}
 		return message;
 	}
+	
+	public String toString2() {
+		
+		String message = "";
+		
+		if(snake != ' ') {
+			message = "["+snake+"]";
+		}else if(ladder != 0) {
+			message = "["+ladder+"]";
+		}else if(first != null){
+			message = "["+getSymbols(first)+"]";
+		}else {
+			message = "[  ]";
+		}
+		
+		return message;
+	}
 
 	public Player getFirst() {
 		return first;

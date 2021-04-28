@@ -88,6 +88,7 @@ public class Menu {
 			System.out.println("Ingreso un valor INVALIDO");
 			selectOpt1();
 		}else {
+			System.out.println(snakesAndLader.toString());
 			gamePlay();
 		}
 	}
@@ -97,7 +98,8 @@ public class Menu {
 		String nextLine = br.readLine();
 		
 		if(nextLine.isEmpty()) {
-			System.out.println(snakesAndLader.toString());
+			System.out.println(snakesAndLader.moveplayer());
+			System.out.println(snakesAndLader.toString2());
 			gamePlay();
 		}else if(nextLine.equalsIgnoreCase(NUM)) {
 			System.out.println(snakesAndLader.toString());

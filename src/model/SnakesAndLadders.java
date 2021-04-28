@@ -11,6 +11,8 @@ public class SnakesAndLadders {
 	private int matrixCols;
 
 	private static int verify = 0;
+	private static int numberPlayer = 0;
+	private static int numberPlayerVerify = 0;
 
 	public SnakesAndLadders(int matrixRows, int matrixCols) {
 		this.matrixRows = matrixRows;
@@ -230,6 +232,8 @@ public class SnakesAndLadders {
 					matrixRows = row;
 					matrixCols = col;
 					createNewMatrix();
+					
+					numberPlayer = players;
 
 					if(players <= 9) {
 						int index = 10;
@@ -395,14 +399,32 @@ public class SnakesAndLadders {
 		
 		return index + verify;
 	}
+	
+	public String moveplayer() {
+		
+		String message = "";
+		
+		if(numberPlayer == 0) {
+			numberPlayer = numberPlayerVerify;
+		}else {
+			Player player = findPlayer(numberPlayer);
+			
+			message = movePlayer(player);
+			numberPlayer--;
+		}
+		
+		return message;
+	}
 
 	public String movePlayer(Player current) {
 
 		String message = "";
 
 		int die = random();
-
-		message = "El jugador "+current.getSymbol()+" ha lanzado el dado y obtuvo el puntaje "+die;
+		
+		if(current != null) {
+			message = "El jugador "+current.getSymbol()+" ha lanzado el dado y obtuvo el puntaje "+die;
+		}
 
 		move(current,die);
 
@@ -437,16 +459,19 @@ public class SnakesAndLadders {
 	
 	private void moveInOrder(Node node, Player current, Player player) {
 		
-		if(current.getPosition() < player.getPosition()) {
-			if(current.getNext() != null) {
-				moveInOrder(node,current.getNext(),player);
-			}else {
-				current.setNext(player);
-			}
-		}else {
-			
+		if(current == null) {
 			node.setFirst(player);
-			player.setNext(current);
+		}else {
+			if(current.getPosition() < player.getPosition()) {
+				if(current.getNext() != null) {
+					moveInOrder(node,current.getNext(),player);
+				}else {
+					current.setNext(player);
+				}
+			}else {
+				node.setFirst(player);
+				player.setNext(current);
+			}
 		}
 	}
 	
@@ -550,6 +575,51 @@ public class SnakesAndLadders {
 
 		return player;
 	}
+	
+	private Player findPlayer(int position) {
+		
+		Player player = null;
+		
+		player = findNext(getFirst(),position);
+				
+		return player;
+	}
+	
+	private Player findNext(Node newNode, int position) {
+		
+		Player player = findPlayerToMove(position,newNode);
+
+		if(newNode.getNext() != null && player == null) {
+			player = findNext(newNode.getNext(),position);
+		}else if(newNode.getUp() != null && player == null){
+			player = findPrev(newNode.getUp(),position);
+		}
+		
+		return player;
+	}
+	
+	private Player findPrev(Node newNode, int position) {
+
+		Player player = findPlayerToMove(position,newNode);
+
+		if(newNode.getPrevious() != null && player == null) {
+			player = findPrev(newNode.getPrevious(),position);
+		}else  if(newNode.getUp() != null && player == null){
+			player = findNext(newNode.getUp(),position);
+		}
+		
+		return player;
+	}
+	
+	private Player findPlayerToMove(int current, Node baseNode) {
+		
+		Player player = null;
+
+		if(baseNode.getFirst() != null && baseNode.getFirst().getPosition() == current) {
+			player = baseNode.getFirst();
+		}
+		return player;
+	}
 
 	public int random() {
 
@@ -583,27 +653,27 @@ public class SnakesAndLadders {
 	}
 
 	public String toString() {
-		String msg;
-		msg = toStringRow(root);
-		return msg;
+		String message;
+		message = toStringRow(root);
+		return message;
 	}
 
 	private String toStringRow(Node firstRow) {
-		String msg = "";
+		String message = "";
 		if(firstRow!=null) {
-			msg = toStringCol(firstRow) + "\n";
-			msg += toStringRow(firstRow.getDown());
+			message = toStringCol(firstRow) + "\n";
+			message += toStringRow(firstRow.getDown());
 		}
-		return msg;
+		return message;
 	}
 
 	private String toStringCol(Node current) {
-		String msg = "";
+		String message = "";
 		if(current!=null) {
-			msg = current.toString();
-			msg += toStringCol(current.getNext());
+			message = current.toString();
+			message += toStringCol(current.getNext());
 		}
-		return msg;
+		return message;
 	}
 
 	public String toStringScoreTable() {
@@ -633,9 +703,29 @@ public class SnakesAndLadders {
 	}
 
 	public String toString2() {
-		String msg = "";
+		String message = "";
+		
+		message = toStringRow2(root);
+		
+		return message;
+	}
+	
+	private String toStringRow2(Node firstRow) {
+		String message = "";
+		if(firstRow!=null) {
+			message = toStringCol2(firstRow) + "\n";
+			message += toStringRow2(firstRow.getDown());
+		}
+		return message;
+	}
 
-		return msg;
+	private String toStringCol2(Node current) {
+		String message = "";
+		if(current!=null) {
+			message = current.toString2();
+			message += toStringCol2(current.getNext());
+		}
+		return message;
 	}
 
 	private Node getFirst() {
