@@ -246,7 +246,7 @@ public class SnakesAndLadders {
 							}
 							
 						}else if(setting.length == 9) {
-							addSymbols(index-players);
+							addSymbols(players);
 							
 						}else {
 							stop = false;
@@ -319,7 +319,6 @@ public class SnakesAndLadders {
 
 		Random azarSymbols = new Random();
 		int selectedSymbol = (int)(azarSymbols.nextDouble() * 9);
-		int cont = 0;
 
 		if(index > 0) {
 
@@ -327,55 +326,55 @@ public class SnakesAndLadders {
 			case 1:
 				verify = 0;
 				symbol = "*";
-				cont = searchSymbols(first.getFirst(),symbol, 9);
+				searchSymbols(first.getFirst(),symbol, 9);
 				break;
 
 			case 2:
 				verify = 0;
 				symbol = "!";
-				cont = searchSymbols(first.getFirst(),symbol, 9);
+				searchSymbols(first.getFirst(),symbol, 9);
 				break;
 
 			case 3:
 				verify = 0;
 				symbol = "O";
-				cont = searchSymbols(first.getFirst(),symbol, 9);
+				searchSymbols(first.getFirst(),symbol, 9);
 				break;
 
 			case 4:
 				verify = 0;
 				symbol = "X";
-				cont = searchSymbols(first.getFirst(),symbol, 9);
+				searchSymbols(first.getFirst(),symbol, 9);
 				break;
 
 			case 5:
 				verify = 0;
 				symbol = "%";
-				cont = searchSymbols(first.getFirst(),symbol, 9);
+				searchSymbols(first.getFirst(),symbol, 9);
 				break;
 
 			case 6:
 				verify = 0;
 				symbol = "$";
-				cont = searchSymbols(first.getFirst(),symbol, 9);
+				searchSymbols(first.getFirst(),symbol, 9);
 				break;
 
 			case 7:
 				verify = 0;
 				symbol = "#";
-				cont = searchSymbols(first.getFirst(),symbol, 9);
+				searchSymbols(first.getFirst(),symbol, 9);
 				break;
 
 			case 8:
 				verify = 0;
 				symbol = "+";
-				cont = searchSymbols(first.getFirst(),symbol, 9);
+				searchSymbols(first.getFirst(),symbol, 9);
 				break;
 
 			case 9:
 				verify = 0;
 				symbol = "&";
-				cont = searchSymbols(first.getFirst(),symbol, 9);
+				searchSymbols(first.getFirst(),symbol, 9);
 				break;
 			}
 
@@ -410,14 +409,12 @@ public class SnakesAndLadders {
 		}
 	}
 
-	private int searchSymbols(Player player,String symbol, int index) {
+	private void searchSymbols(Player player,String symbol, int index) {
 		
 		if(player != null && player.getSymbol().equals(symbol) && index > 0) {
 			verify++;
 			searchSymbols(player.getNext(),symbol, index - 1);
 		}
-		
-		return index + verify;
 	}
 
 	public String movePlayer(Player current) {
