@@ -100,28 +100,39 @@ public class Node {
 	public String toString() {
 		
 		String message = "";
+		symbols = "";
 		
 		if(snake != ' ') {
 			message = "["+position+snake+"]";
 		}else if(ladder != 0) {
 			message = "["+position+ladder+"]";
-		}else if(first != null){
+		}else if(ladder != 0 && first != null) {
+			message = "["+position+ladder+getSymbols(first)+"]";
+		}else if(snake != ' ' && first != null) {
+			message = "["+position+snake+getSymbols(first)+"]";
+		}else  if(first != null){
 			message = "["+position+getSymbols(first)+"]";
 		}else {
 			message = "["+position+"]";
 		}
+		
 		return message;
 	}
 	
 	public String toString2() {
 		
 		String message = "";
+		symbols = "";
 		
 		if(snake != ' ') {
 			message = "["+snake+"]";
 		}else if(ladder != 0) {
 			message = "["+ladder+"]";
-		}else if(first != null){
+		}else if(ladder != 0 && first != null) {
+			message = "["+ladder+getSymbols(first)+"]";
+		}else if(snake != ' ' && first != null) {
+			message = "["+snake+getSymbols(first)+"]";
+		}else  if(first != null){
 			message = "["+getSymbols(first)+"]";
 		}else {
 			message = "[ ]";

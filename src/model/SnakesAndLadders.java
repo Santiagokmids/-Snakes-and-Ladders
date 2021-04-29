@@ -11,8 +11,9 @@ public class SnakesAndLadders {
 	private int matrixCols;
 
 	private static int verify = 0;
-	private static int numberPlayer = 0;
-	private static int numberPlayerVerify = 0;
+	private static int numberPlayer;
+	private static int numberPlayerVerify;
+	private static Player currentPlayer;
 
 	public SnakesAndLadders(int matrixRows, int matrixCols) {
 		this.matrixRows = matrixRows;
@@ -21,6 +22,9 @@ public class SnakesAndLadders {
 	}
 
 	private void createNewMatrix() {
+		
+		numberPlayer = 0;
+		numberPlayerVerify = 0;
 		root = new Node(0,0);
 		createNewRow(0,0,root);
 		asingPosition(0,matrixRows-1,0);
@@ -217,9 +221,9 @@ public class SnakesAndLadders {
 
 		String setting[] = settings.split("");
 		boolean stop = true;
-		
+
 		if(setting.length >= 8) {
-			
+
 			try {
 
 				int row = Integer.parseInt(setting[0]);
@@ -232,7 +236,7 @@ public class SnakesAndLadders {
 					matrixRows = row;
 					matrixCols = col;
 					createNewMatrix();
-					
+
 					numberPlayer = players;
 
 					if(players <= 9) {
@@ -240,18 +244,18 @@ public class SnakesAndLadders {
 
 						if(players == ((settings.length() - 1) - index) && setting.length > 10 && setting[9].equals(" ")) {
 							verifySymbols(setting, settings.length()-1);
-							
+
 							if(verify == 0) {
 								index = 10;
 								addSettingPlayers(getFirst().getFirst(),setting, index);
-								
+
 							}else {
 								stop = false;
 							}
-							
+
 						}else if(setting.length == 9) {
 							addSymbols(players);
-							
+
 						}else {
 							stop = false;
 						}
@@ -277,7 +281,7 @@ public class SnakesAndLadders {
 		}
 		return stop;
 	}
-	
+
 	private void verifySymbols(String[] setting,int players) {
 		if(players >= 10 && setting[players].equals(setting[players - 1])) {
 			verify++;
@@ -287,8 +291,9 @@ public class SnakesAndLadders {
 	private void insertValuePlayer(Player current,int i,int cont) {
 
 		if(current != null && cont <= i) {
+			
 			current.setPosition(cont);
-			insertValuePlayer(current.getNext(), i, cont++);
+			insertValuePlayer(current.getNext(), i, cont+1);
 		}
 	}
 
@@ -296,7 +301,7 @@ public class SnakesAndLadders {
 
 		if(index == 10 && settings.length > index) {
 			getFirst().setFirst(new Player(settings[index]));
-			
+
 			if(settings.length > 11) {
 				getFirst().getFirst().setNext(new Player(settings[index + 1]));
 				addSettingPlayers(getFirst().getFirst().getNext(), settings, index + 2);
@@ -394,20 +399,20 @@ public class SnakesAndLadders {
 
 			if(verify == 0 && !symbol.equals("")) {
 				asignSymbol(player, index, symbol);
-				
+
 			}else if(index > 0){
 				selectSymbols(first,player,index);
 			}
 		}
 	}
-	
+
 	private void asignSymbol(Player player, int index, String symbol) {
-		
+
 		if(getFirst().getFirst() == null) {
 			Player current = new Player(symbol);
 			getFirst().setFirst(current);
 			selectSymbols(getFirst(),getFirst().getFirst(), index-1);
-			
+
 		}else {
 			if(index > 0 ) {
 				searchNext(player, symbol);
@@ -423,29 +428,32 @@ public class SnakesAndLadders {
 	}
 
 	private void searchSymbols(Player player,Player current) {
-		
+
 		if(current != null && player != null && player.getSymbol().equals(current.getSymbol())) {
 			verify++;
-			
+
 		}else if(player != null && player.getNext() != null) {
 			searchSymbols(player.getNext(),current);
 		}
-			
+
 	}
-	
+
 	public String moveplayer() {
-		
+
 		String message = "";
 		
-		if(numberPlayer == 0) {
-			numberPlayer = numberPlayerVerify;
+		if(numberPlayer == numberPlayerVerify) {
+			numberPlayerVerify = 0;
+			message = moveplayer();
 		}else {
-			Player player = findPlayer(numberPlayer);
+			numberPlayerVerify++;
 			
-			message = movePlayer(player);
-			numberPlayer--;
+			Player player = findPlayer(numberPlayerVerify);
+			
+			if(player != null) {
+				message = movePlayer(player);
+			}
 		}
-		
 		return message;
 	}
 
@@ -455,59 +463,81 @@ public class SnakesAndLadders {
 
 		int die = random();
 		
-		if(current != null) {
-			message = "El jugador "+current.getSymbol()+" ha lanzado el dado y obtuvo el puntaje "+die+"\n";
-		}
-
 		move(current,die);
-
+		message = "El jugador "+current.getSymbol()+" ha lanzado el dado y obtuvo el puntaje "+die+"\n";
+		
 		return message;
 	}
 
 	private void move(Player current, int die) {
-		
+
 		Node node = searchNode(current);
-		
-		Player player = move(current);
-		
-		if(player != null && node != null) {
-			movePlayerNode(player, (node.getPosition()+die));
+
+		if(current != null && node != null) {
+			movePlayerNode(currentPlayer, (node.getPosition()+die));
 		}
 	}
-	
+
 	private void movePlayerNode(Player player, int position) {
 		movePlayerNode(getFirst(),player,position);
 	}
-	
+
 	private void movePlayerNode(Node current, Player player, int position) {
-		
 		if(current.getPosition() == position) {
 			if(current.getFirst() == null) {
 				current.setFirst(player);
 			}else {
 				moveInOrder(current,current.getFirst(),player);
 			}
+		}else if(current.getNext() != null){
+			movePlayerNode(current.getNext(),player,position);
+		}else if(current.getNext() == null) {
+			movePlayerNodeUpPrev(current,player,position);
 		}
 	}
-	
-	private void moveInOrder(Node node, Player current, Player player) {
-		
-		if(current == null) {
-			node.setFirst(player);
-		}else {
-			if(current.getPosition() < player.getPosition()) {
-				if(current.getNext() != null) {
-					moveInOrder(node,current.getNext(),player);
-				}else {
-					current.setNext(player);
-				}
+
+	private void movePlayerPrev(Node current, Player player, int position) {
+		if(current.getPosition() == position) {
+			if(current.getFirst() == null) {
+				current.setFirst(player);
 			}else {
-				node.setFirst(player);
-				player.setNext(current);
+				moveInOrder(current,current.getFirst(),player);
 			}
+		}else if(current.getPrevious() != null){
+			movePlayerPrev(current.getPrevious(),player,position);
+		}else if(current.getPrevious() == null) {
+			movePlayerNodeUp(current,player,position);
 		}
 	}
-	
+
+	private void movePlayerNodeUp(Node current, Player player, int position) {
+
+		if(current.getUp() != null) {
+			movePlayerNode(current.getUp(),player,position);
+		}
+	}
+
+	private void movePlayerNodeUpPrev(Node current, Player player, int position) {
+
+		if(current.getUp() != null) {
+			movePlayerPrev(current.getUp(),player,position);
+		}
+	}
+
+	private void moveInOrder(Node node, Player current, Player player) {
+
+		if(current.getPosition() < player.getPosition()) {
+			if(current.getNext() != null) {
+				moveInOrder(node,current.getNext(),player);
+			}else {
+				current.setNext(player);
+			}
+		}else {
+			node.setFirst(player);
+			node.getFirst().setNext(current);
+		}
+	}
+
 	private Node searchNode(Player current) {
 
 		Node baseNode = getFirst();
@@ -524,7 +554,7 @@ public class SnakesAndLadders {
 
 		Player player = searchPlayer(current,baseNode);
 		Node searched = null;
-		
+
 		if(player != null) {
 			searched = baseNode;
 		}else if(baseNode.getNext() != null && player == null) {
@@ -532,7 +562,7 @@ public class SnakesAndLadders {
 		}else if(baseNode.getUp() != null && player == null){
 			searched = prevNode(current,baseNode.getUp());
 		}
-		
+
 		return searched;
 	}
 
@@ -540,7 +570,7 @@ public class SnakesAndLadders {
 
 		Player player = searchPlayer(current,baseNode);
 		Node searched = null;
-		
+
 		if(player != null) {
 			searched = baseNode;
 		}else if(baseNode.getPrevious() != null && player == null) {
@@ -548,46 +578,8 @@ public class SnakesAndLadders {
 		}else  if(baseNode.getUp() != null && player == null){
 			searched = nextNode(current,baseNode.getUp());
 		}
-		
+
 		return searched;
-	}
-
-	private Player move(Player current) {
-
-		Node baseNode = getFirst();
-		Player player = null;
-
-		if(baseNode != null) {
-			player = next(current,baseNode);
-		}
-
-		return player;
-	}
-
-	private Player next(Player current, Node baseNode) {
-
-		Player player = findPlayerToMove(current,baseNode);
-		
-		if(baseNode.getNext() != null && player == null) {
-			player = next(current,baseNode.getNext());
-		}else if(baseNode.getUp() != null && player == null){
-			player = prev(current,baseNode.getUp());
-		}
-		
-		return player;
-	}
-
-	private Player prev(Player current, Node baseNode) {
-
-		Player player = findPlayerToMove(current,baseNode);
-
-		if(baseNode.getPrevious() != null && player == null) {
-			player = prev(current,baseNode.getPrevious());
-		}else  if(baseNode.getUp() != null && player == null){
-			player = next(current,baseNode.getUp());
-		}
-		
-		return player;
 	}
 
 	private Player searchPlayer(Player current, Node baseNode) {
@@ -596,30 +588,30 @@ public class SnakesAndLadders {
 
 		if(baseNode.getFirst() != null && baseNode.getFirst() == current) {
 			
-			player = current;
+			player = new Player(current.getSymbol());
+			currentPlayer = player;
+			currentPlayer.setPosition(current.getPosition());
 			
 			if(baseNode.getFirst().getNext() == null) {
 				baseNode.setFirst(null);
 			}else {
 				baseNode.setFirst(baseNode.getFirst().getNext());
 			}
-			
 		}
+		return player;
+	}
+
+	private Player findPlayer(int position) {
+
+		Player player = null;
+
+		player = findNext(getFirst(),position);
 
 		return player;
 	}
-	
-	private Player findPlayer(int position) {
-		
-		Player player = null;
-		
-		player = findNext(getFirst(),position);
-				
-		return player;
-	}
-	
+
 	private Player findNext(Node newNode, int position) {
-		
+
 		Player player = findPlayerToMove(position,newNode);
 
 		if(newNode.getNext() != null && player == null) {
@@ -627,12 +619,12 @@ public class SnakesAndLadders {
 		}else if(newNode.getUp() != null && player == null){
 			player = findPrev(newNode.getUp(),position);
 		}
-		
+
 		return player;
 	}
-	
-	private Player findPrev(Node newNode, int position) {
 
+	private Player findPrev(Node newNode, int position) {
+		
 		Player player = findPlayerToMove(position,newNode);
 
 		if(newNode.getPrevious() != null && player == null) {
@@ -640,27 +632,15 @@ public class SnakesAndLadders {
 		}else  if(newNode.getUp() != null && player == null){
 			player = findNext(newNode.getUp(),position);
 		}
-		
+
 		return player;
 	}
-	
+
 	private Player findPlayerToMove(int current, Node baseNode) {
-		
-		Player player = null;
 
+		Player player = null;
+		
 		if(baseNode.getFirst() != null && baseNode.getFirst().getPosition() == current) {
-			player = baseNode.getFirst();
-		}
-		return player;
-	}
-	
-	private Player findPlayerToMove(Player current, Node baseNode) {
-		
-		Player player = null;
-		System.out.println("xd");
-
-		if(baseNode.getFirst() != null && baseNode.getFirst() == current) {
-			System.out.println(baseNode.toString());
 			player = baseNode.getFirst();
 		}
 		return player;
@@ -749,12 +729,12 @@ public class SnakesAndLadders {
 
 	public String toString2() {
 		String message = "";
-		
+
 		message = toStringRow2(root);
-		
+
 		return message;
 	}
-	
+
 	private String toStringRow2(Node firstRow) {
 		String message = "";
 		if(firstRow!=null) {
