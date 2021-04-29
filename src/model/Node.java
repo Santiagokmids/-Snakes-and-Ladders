@@ -1,21 +1,21 @@
 package model;
 
 public class Node {
-	
+
 	private int row;
 	private int col;
 	private int position;
 	private char snake;
 	private int ladder;
 	private Player first;
-	
+
 	private Node next;
 	private Node previous;
 	private Node up;
 	private Node down;
-	
+
 	private String symbols = "";
-	
+
 	public Node(int row, int col) {
 		this.row = row;
 		this.col = col;
@@ -72,7 +72,7 @@ public class Node {
 	public void setDown(Node down) {
 		this.down = down;
 	}
-	
+
 	public char getSnake() {
 		return snake;
 	}
@@ -88,7 +88,7 @@ public class Node {
 	public void setLadder(int ladder) {
 		this.ladder = ladder;
 	}
-	
+
 	public int getPosition() {
 		return position;
 	}
@@ -98,53 +98,70 @@ public class Node {
 	}
 
 	public String toString() {
-		
+
 		String message = "";
 		symbols = "";
-		
+
 		if(snake != ' ') {
-			message = "["+position+snake+"]";
+
+			if(snake != ' ' && first != null) {
+				message = "["+position+snake+getSymbols(first)+"]";
+			}else {
+				message = "["+position+snake+"]";
+			}
+
 		}else if(ladder != 0) {
-			message = "["+position+ladder+"]";
-		}else if(ladder != 0 && first != null) {
-			message = "["+position+ladder+getSymbols(first)+"]";
-		}else if(snake != ' ' && first != null) {
-			message = "["+position+snake+getSymbols(first)+"]";
+
+			if(ladder != 0 && first != null) {
+				message = "["+position+ladder+getSymbols(first)+"]";
+			}else {
+				message = "["+position+ladder+"]";
+			}
+
 		}else  if(first != null){
 			message = "["+position+getSymbols(first)+"]";
 		}else {
 			message = "["+position+"]";
 		}
-		
+
 		return message;
 	}
-	
+
 	public String toString2() {
-		
+
 		String message = "";
 		symbols = "";
-		
+
 		if(snake != ' ') {
-			message = "["+snake+"]";
+
+			if(snake != ' ' && first != null) {
+				message = "["+snake+getSymbols(first)+"]";
+				
+			}else {
+				message = "["+snake+"]";
+			}
+
 		}else if(ladder != 0) {
-			message = "["+ladder+"]";
-		}else if(ladder != 0 && first != null) {
-			message = "["+ladder+getSymbols(first)+"]";
-		}else if(snake != ' ' && first != null) {
-			message = "["+snake+getSymbols(first)+"]";
+
+			if(ladder != 0 && first != null) {
+				message = "["+ladder+getSymbols(first)+"]";
+			}else {
+				message = "["+ladder+"]";
+			}
+
 		}else  if(first != null){
 			message = "["+getSymbols(first)+"]";
 		}else {
 			message = "[ ]";
 		}
-		
+
 		return message;
 	}
 
 	public Player getFirst() {
 		return first;
 	}
-	
+
 	private String getSymbols(Player player) {
 
 		if(player != null) {

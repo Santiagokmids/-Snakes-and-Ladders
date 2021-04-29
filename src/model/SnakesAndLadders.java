@@ -452,7 +452,7 @@ public class SnakesAndLadders {
 			
 			if(player != null) {
 				message = movePlayer(player);
-				
+				player.setMovement(player.getMovement()+1);
 			}else {
 				message = moveplayer();
 			}
@@ -488,7 +488,13 @@ public class SnakesAndLadders {
 	private void movePlayerNode(Node current, Player player, int position) {
 		if(current.getPosition() == position) {
 			if(current.getFirst() == null) {
-				current.setFirst(player);
+				if(current.getSnake() != ' ') {
+					findSnakesAndLadders(current,player);
+				}else if(current.getLadder() != 0) {
+					findSnakesAndLadders(current,player);
+				}else {
+					current.setFirst(player);
+				}
 			}else {
 				moveInOrder(current,current.getFirst(),player);
 			}
@@ -502,7 +508,13 @@ public class SnakesAndLadders {
 	private void movePlayerPrev(Node current, Player player, int position) {
 		if(current.getPosition() == position) {
 			if(current.getFirst() == null) {
-				current.setFirst(player);
+				if(current.getSnake() != ' ') {
+					findSnakesAndLadders(current,player);
+				}else if(current.getLadder() != 0) {
+					findSnakesAndLadders(current,player);
+				}else {
+					current.setFirst(player);
+				}
 			}else {
 				moveInOrder(current,current.getFirst(),player);
 			}
@@ -538,6 +550,52 @@ public class SnakesAndLadders {
 		}else {
 			node.setFirst(player);
 			node.getFirst().setNext(current);
+		}
+	}
+	
+	private void findSnakesAndLadders(Node current, Player player) {
+		nextSanakesAndLadders(getFirst(),current,player);
+	}
+	
+	private void nextSanakesAndLadders(Node current, Node node, Player player) {
+		
+		if(node.getSnake() == current.getSnake() && current.getPosition() < node.getPosition()) {
+			if(current.getFirst() == null) {
+				current.setFirst(player);
+			}else {
+				moveInOrder(current,current.getFirst(),player);
+			}
+		}else if(node.getLadder() == current.getLadder() && current.getPosition() > node.getPosition()) {
+			if(current.getFirst() == null) {
+				current.setFirst(player);
+			}else {
+				moveInOrder(current, current.getFirst(), player);
+			}
+		}else if(current.getNext() != null){
+			nextSanakesAndLadders(current.getNext(),node,player);
+		}else if(current.getUp() != null) {
+			prevSanakesAndLadders(current.getUp(),node,player);
+		}
+	}
+	
+	private void prevSanakesAndLadders(Node current, Node node, Player player) {
+		
+		if(node.getSnake() == current.getSnake() && current.getPosition() < node.getPosition()) {
+			if(current.getFirst() == null) {
+				current.setFirst(player);
+			}else {
+				moveInOrder(current,current.getFirst(),player);
+			}
+		}else if(node.getLadder() == current.getLadder() && current.getPosition() > node.getPosition()) {
+			if(current.getFirst() == null) {
+				current.setFirst(player);
+			}else {
+				moveInOrder(current, current.getFirst(), player);
+			}
+		}else if(current.getPrevious() != null){
+			prevSanakesAndLadders(current.getPrevious(),node,player);
+		}else if(current.getUp() != null) {
+			nextSanakesAndLadders(current.getUp(),node,player);
 		}
 	}
 
