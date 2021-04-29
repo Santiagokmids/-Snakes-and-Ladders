@@ -314,11 +314,12 @@ public class SnakesAndLadders {
 		selectSymbols(getFirst(),getFirst().getFirst(),index);
 	}
 
-	private String selectSymbols(Node first,Player player,int index) {
+	private void selectSymbols(Node first,Player player,int index) {
 		String symbol = "";
 
 		Random azarSymbols = new Random();
-		int selectedSymbol = (int)(azarSymbols.nextDouble() * 9);
+		int selectedSymbol = (int)(azarSymbols.nextDouble() * 10);
+		Player current;
 
 		if(index > 0) {
 
@@ -326,66 +327,74 @@ public class SnakesAndLadders {
 			case 1:
 				verify = 0;
 				symbol = "*";
-				searchSymbols(first.getFirst(),symbol, 9);
+				current = new Player(symbol);
+				searchSymbols(first.getFirst(),current);
 				break;
 
 			case 2:
 				verify = 0;
 				symbol = "!";
-				searchSymbols(first.getFirst(),symbol, 9);
+				current = new Player(symbol);
+				searchSymbols(first.getFirst(),current);
 				break;
 
 			case 3:
 				verify = 0;
 				symbol = "O";
-				searchSymbols(first.getFirst(),symbol, 9);
+				current = new Player(symbol);
+				searchSymbols(first.getFirst(),current);
 				break;
 
 			case 4:
 				verify = 0;
 				symbol = "X";
-				searchSymbols(first.getFirst(),symbol, 9);
+				current = new Player(symbol);
+				searchSymbols(first.getFirst(),current);
 				break;
 
 			case 5:
 				verify = 0;
 				symbol = "%";
-				searchSymbols(first.getFirst(),symbol, 9);
+				current = new Player(symbol);
+				searchSymbols(first.getFirst(),current);
 				break;
 
 			case 6:
 				verify = 0;
 				symbol = "$";
-				searchSymbols(first.getFirst(),symbol, 9);
+				current = new Player(symbol);
+				searchSymbols(first.getFirst(),current);
 				break;
 
 			case 7:
 				verify = 0;
 				symbol = "#";
-				searchSymbols(first.getFirst(),symbol, 9);
+				current = new Player(symbol);
+				searchSymbols(first.getFirst(),current);
 				break;
 
 			case 8:
 				verify = 0;
 				symbol = "+";
-				searchSymbols(first.getFirst(),symbol, 9);
+				current = new Player(symbol);
+				searchSymbols(first.getFirst(),current);
 				break;
 
 			case 9:
 				verify = 0;
 				symbol = "&";
-				searchSymbols(first.getFirst(),symbol, 9);
+				current = new Player(symbol);
+				searchSymbols(first.getFirst(),current);
 				break;
 			}
 
-			if(verify == 0) {
+			if(verify == 0 && !symbol.equals("")) {
 				asignSymbol(player, index, symbol);
 				
-			}else {
-				selectSymbols(first,getFirst().getFirst().getNext(),index);
+			}else if(index > 0){
+				selectSymbols(first,player,index);
 			}
 		}
-		return symbol;
 	}
 	
 	private void asignSymbol(Player player, int index, String symbol) {
@@ -409,12 +418,15 @@ public class SnakesAndLadders {
 		}
 	}
 
-	private void searchSymbols(Player player,String symbol, int index) {
+	private void searchSymbols(Player player,Player current) {
 		
-		if(player != null && player.getSymbol().equals(symbol) && index > 0) {
+		if(current != null && player != null && player.getSymbol().equals(current.getSymbol())) {
 			verify++;
-			searchSymbols(player.getNext(),symbol, index - 1);
+			
+		}else if(player != null && player.getNext() != null) {
+			searchSymbols(player.getNext(),current);
 		}
+			
 	}
 
 	public String movePlayer(Player current) {
