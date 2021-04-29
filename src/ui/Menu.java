@@ -78,7 +78,7 @@ public class Menu {
 	public void selectOpt1() throws IOException {
 		System.out.println("\nIngrese los siguientes datos separandolos por espacios:\n"
 				+ "Numero de filas, numero de columnas, numero de serpientes, numero de escaleras, numero de jugadores, simbolos de cada jugador\n"
-				+ "--- Los simbolos de cada jugador van juntos, y si no agrega ninguno, se seleccionaran de forma aleatoria ---\n"
+				+ "--- Los simbolos de cada jugador van juntos, y si no agrega ninguno, se seleccionaran de forma aleatoria. No se pueden repetir simbolos ---\n"
 				+ "\n* SIMBOLOS QUE PUEDE USAR: *, !, O, X, %, $, #, +, &\n");
 
 		String setting = br.readLine();
