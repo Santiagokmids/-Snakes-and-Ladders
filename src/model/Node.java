@@ -124,7 +124,7 @@ public class Node {
 		}else if(first != null){
 			message = "["+getSymbols(first)+"]";
 		}else {
-			message = "[  ]";
+			message = "[ ]";
 		}
 		
 		return message;
