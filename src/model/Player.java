@@ -4,22 +4,14 @@ public class Player {
 	
 	private Player next;
 	
-	private String symbol;
+	private char symbol;
 	private int movement;
 	private int position;
 	
-	public Player(String symbol) {
-		this.symbol = symbol;
+	public Player(char c) {
+		this.setSymbol(c);
 		movement = 0;
 		position = 0;
-	}
-
-	public String getSymbol() {
-		return symbol;
-	}
-
-	public void setSymbol(String symbol) {
-		this.symbol = symbol;
 	}
 
 	public int getMovement() {
@@ -44,5 +36,17 @@ public class Player {
 
 	public void setPosition(int position) {
 		this.position = position;
+	}
+
+
+
+	public char getSymbol() {
+		return symbol;
+	}
+
+
+
+	public void setSymbol(char symbol) {
+		this.symbol = symbol;
 	}
 }
