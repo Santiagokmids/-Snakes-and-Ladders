@@ -452,6 +452,9 @@ public class SnakesAndLadders {
 			
 			if(player != null) {
 				message = movePlayer(player);
+				
+			}else {
+				message = moveplayer();
 			}
 		}
 		return message;
