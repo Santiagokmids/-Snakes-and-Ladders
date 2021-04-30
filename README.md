@@ -1,15 +1,12 @@
 # snakes-and-ladders
 
-* Proyecto realizado con:
-Eclipse-IDE For java developers
+* Project made with: Eclipse-IDE For java developers
 
-* Lenguaje:
-Java 8 
+* Language: Java 8
 
-* Sistema operativo:
-Windows 10
+* Operating system: Windows 10
 
-* Proyecto realizado por:
+* Project carried out by: 
 
   Luis Miguel Ossa -> https://github.com/Itsumohitoride
 
