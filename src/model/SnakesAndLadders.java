@@ -1,9 +1,17 @@
 package model;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Random;
 
-public class SnakesAndLadders {
+public class SnakesAndLadders{
 
+	public final static String SAVE_PATH_FILE_PEOPLE = "data/scores.txt";
+	
 	private Node root;
 	private BestPlayers firstPlayer;
 
@@ -13,6 +21,7 @@ public class SnakesAndLadders {
 	private int ladders;
 	private int players;
 	private String symbols;
+	private BestPlayers bestPlayers;
 	
 	private static int verify = 0;
 	private static int numberPlayer;
@@ -23,6 +32,7 @@ public class SnakesAndLadders {
 		this.matrixRows = matrixRows;
 		this.matrixCols = matrixCols;
 		snakes = 0;
+		bestPlayers = null;
 		ladders= 0;
 		players = 0;
 		symbols = "";
@@ -69,17 +79,27 @@ public class SnakesAndLadders {
 		}
 	}
 
-	public void addPlayer(String name, int row, int col, int snakes, int ladders, int players, long score, String symbol, String otherPlayers) {
-
+	public void addPlayer(String name, int row, int col, int snakes, int ladders, int players, long score, char symbol, String otherPlayers) throws IOException {
+			
 		BestPlayers newPlayer = new BestPlayers(name,row,col,snakes,ladders,players,score,symbol,otherPlayers);
-
+		bestPlayers = newPlayer; 
 		if(firstPlayer == null) {
 			firstPlayer = newPlayer;
 		}else {
 			addPlayer(firstPlayer,newPlayer);
 		}
+		saveData();
 	}
-
+	
+	private void asignBest() {
+		
+		if(firstPlayer == null) {
+			firstPlayer = bestPlayers;
+		}else {
+			addPlayer(firstPlayer,bestPlayers);
+		}
+	}
+	
 	private void asingPosition(int position, int i,int j) {
 
 		Node newNode = searchNode(i,j);
@@ -244,6 +264,9 @@ public class SnakesAndLadders {
 					matrixRows = row;
 					matrixCols = col;
 					createNewMatrix();
+					setSnakes(snakes);
+					setPlayers(players);
+					setLadders(ladders);
 
 					numberPlayer = players;
 
@@ -258,6 +281,8 @@ public class SnakesAndLadders {
 								if(verify == 0) {
 									index = players;
 									int cont = 0;
+									
+									setSymbols(setting[5]);
 
 									addSettingPlayers(getFirst().getFirst(),setting[5], index, cont);
 									verify = 0;
@@ -276,6 +301,8 @@ public class SnakesAndLadders {
 
 						}else if(setting.length - 1 == 4) {
 							addSymbols(players);
+							String play = "";
+							asignPlayers(getFirst().getFirst(), players,play);
 
 						}else {
 							stop = false;
@@ -301,6 +328,16 @@ public class SnakesAndLadders {
 			stop = false;
 		}
 		return stop;
+	}
+	
+	private void asignPlayers(Player player,int play,String players) {
+		
+		if(player != null && play >= 0) {
+			players += player.getSymbol();
+			if(player.getNext() != null) {
+				asignPlayers(player.getNext(), play--,players);
+			}
+		}
 	}
 
 	private void verifySymbols(int players) {
@@ -507,10 +544,16 @@ public class SnakesAndLadders {
 		message = "El jugador "+current.getSymbol()+" ha lanzado el dado y obtuvo el puntaje "+die+"\n";
 
 		if(verify) {
+			currentPlayer = current;
 			message = "\nEl jugador "+current.getSymbol()+" ha ganado el juego, con "+current.getMovement()+" movimientos\n";
 		}
 
 		return message;
+	}
+	
+	public void asignName(String name) throws IOException {
+		Long score = (long) (currentPlayer.getMovement() * (matrixCols * matrixRows)); 
+		addPlayer(name, matrixRows, matrixCols, snakes, ladders, players, score, currentPlayer.getSymbol(), symbols);
 	}
 
 	private boolean move(Player current, int die) {
@@ -767,6 +810,7 @@ public class SnakesAndLadders {
 			currentPlayer = player;
 			currentPlayer.setMovement(current.getMovement());
 			currentPlayer.setPosition(current.getPosition());
+			
 			if(baseNode.getFirst().getNext() == null) {
 				baseNode.setFirst(null);
 			}else {
@@ -1017,4 +1061,25 @@ public class SnakesAndLadders {
 	private Node getFirst() {
 		return searchNode(matrixRows - 1, 0);
 	}
+	
+
+	public void loadData() throws IOException, ClassNotFoundException{
+
+		File scores = new File(SAVE_PATH_FILE_PEOPLE);
+
+		if(scores.exists()){
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(scores));
+			bestPlayers = (BestPlayers) ois.readObject();
+			ois.close();
+		}
+	}
+	
+	public void saveData() throws IOException {
+
+		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(SAVE_PATH_FILE_PEOPLE));
+		oos.writeObject(bestPlayers);
+
+		oos.close();
+	}
+
 }
