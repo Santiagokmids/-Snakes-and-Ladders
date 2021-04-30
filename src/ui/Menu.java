@@ -125,12 +125,15 @@ public class Menu {
 		}
 	}
 	
-	private void simulation() throws InterruptedException, IOException {
+	private void simulation() throws InterruptedException, IOException, ClassNotFoundException {
 		
 		String message = snakesAndLader.moveplayer();
 		
 		if(message.substring(message.length()-2).equals("s\n")) {
 			System.out.println(message);
+			System.out.println("Esciba el nickName del ganador\n");
+			String nick = br.readLine();
+			snakesAndLader.asignName(nick);
 		}else {
 			System.out.println(message);
 			System.out.println(snakesAndLader.toString2());
@@ -141,7 +144,7 @@ public class Menu {
 
 	public void scores() throws ClassNotFoundException, IOException {
 
-		String message = snakesAndLader.toStringScoreTable();
+		String message = snakesAndLader.searchInOrder();
 		snakesAndLader.loadData();
 		System.out.println("-----------------------------------"
 				+ "\n           PUNTUACIONES\n-----------------------------------\n"+ message +"\n-----------------------------------");

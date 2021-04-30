@@ -77,10 +77,12 @@ public class SnakesAndLadders{
 		}
 	}
 
-	public void addPlayer(String name, int row, int col, int snakes, int ladders, int players, long score, char symbol, String otherPlayers) throws IOException {
-			
+	public void addPlayer(String name, int row, int col, int snakes, int ladders, int players, long score, char symbol, String otherPlayers) throws IOException, ClassNotFoundException {
+		
+		loadData();
+		
 		BestPlayers newPlayer = new BestPlayers(name,row,col,snakes,ladders,players,score,symbol,otherPlayers);
-
+		
 		if(firstPlayer == null) {
 			firstPlayer = newPlayer;
 		}else {
@@ -88,7 +90,25 @@ public class SnakesAndLadders{
 		}
 		saveData();
 	}
-
+	
+	public String searchInOrder() throws ClassNotFoundException, IOException {
+		loadData();
+		return searchInOrder(firstPlayer);
+	}
+	
+	public String searchInOrder(BestPlayers player) {
+		
+		String message = "";
+		
+		if(player != null) {
+			message += searchInOrder(player.getPrevious());
+			message += player.toString();
+			message += searchInOrder(player.getNext());
+		}
+		
+		return message;
+	}
+	
 	private void asingPosition(int position, int i,int j) {
 
 		Node newNode = searchNode(i,j);
@@ -540,7 +560,7 @@ public class SnakesAndLadders{
 		return message;
 	}
 	
-	public void asignName(String name) throws IOException {
+	public void asignName(String name) throws IOException, ClassNotFoundException {
 		Long score = (long) (currentPlayer.getMovement() * (matrixCols * matrixRows)); 
 		addPlayer(name, matrixRows, matrixCols, snakes, ladders, players, score, currentPlayer.getSymbol(), symbols);
 	}
@@ -847,7 +867,7 @@ public class SnakesAndLadders{
 	private Player findPlayerToMove(int current, Node baseNode) {
 
 		Player player = null;
-
+		
 		if(baseNode.getFirst() != null) {
 
 			player = findPlayerCurrent(current,baseNode.getFirst());

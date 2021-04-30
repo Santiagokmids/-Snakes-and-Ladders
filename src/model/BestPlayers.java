@@ -126,7 +126,7 @@ public class BestPlayers implements Serializable{
 	public String toString() {
 		String message = "";
 		
-		message = "Nick: "+name+" | Ficha: "+symbol+" | Puntaje: "+score;
+		message = "Nick: "+name+" | Ficha: "+symbol+" | Puntaje: "+score+"\n";
 		
 		return message;
 	}
