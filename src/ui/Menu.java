@@ -14,26 +14,26 @@ public class Menu {
 	
 	private static BufferedReader br;
 	private SnakesAndLadders snakesAndLader;
-	
-	public Menu() throws IOException, InterruptedException {
+
+	public Menu() throws IOException, InterruptedException, ClassNotFoundException {
 		snakesAndLader = new SnakesAndLadders(0, 0);
 		br = new BufferedReader(new InputStreamReader(System.in));
 		startApp();
 	}
 	
-	public void startApp() throws IOException, InterruptedException{
+	public void startApp() throws IOException, InterruptedException, ClassNotFoundException{
 		System.out.println("==================================\n           BIENVENIDOS  \n==================================\n");
 		menu();
 	}
 
-	public void menu() throws IOException, InterruptedException {
+	public void menu() throws IOException, InterruptedException, ClassNotFoundException {
 		System.out.println("----------------------------------"
 				+ "\n      MENU DE OPCIONES\n----------------------------------\n1. Iniciar juego\n2. Puntuaciones\n"
 				+ "3. Salir de la aplicación\n4. Creditos\n----------------------------------");
 		selectOption();
 	}
 
-	public void selectOption() throws IOException, InterruptedException {
+	public void selectOption() throws IOException, InterruptedException, ClassNotFoundException {
 
 		System.out.println("\nIngrese un numero para elegir la opcion");
 		String number = br.readLine();
@@ -75,7 +75,8 @@ public class Menu {
 		br.close();
 	}
 
-	public void selectOpt1() throws IOException, InterruptedException {
+	public void selectOpt1() throws IOException, InterruptedException, ClassNotFoundException {
+
 		System.out.println("\nIngrese los siguientes datos separandolos por espacios:\n"
 				+ "Numero de filas, numero de columnas, numero de serpientes, numero de escaleras, numero de jugadores, simbolos de cada jugador\n"
 				+ "--- Los simbolos de cada jugador van juntos, y si no agrega ninguno, se seleccionaran de forma aleatoria. No se pueden repetir simbolos ---\n"
@@ -93,7 +94,7 @@ public class Menu {
 		}
 	}
 	
-	public void gamePlay() throws IOException, InterruptedException {
+	public void gamePlay() throws IOException, InterruptedException, ClassNotFoundException {
 		
 		String nextLine = br.readLine();
 		
@@ -102,6 +103,9 @@ public class Menu {
 			
 			if(message.substring(message.length()-2).equals("s\n")) {
 				System.out.println(message);
+				System.out.println("Esciba el nickName del ganador\n");
+				String nick = br.readLine();
+				snakesAndLader.asignName(nick);
 			}else {
 				System.out.println(message);
 				System.out.println(snakesAndLader.toString2());
@@ -135,10 +139,10 @@ public class Menu {
 		}
 	}
 
-	public void scores() {
+	public void scores() throws ClassNotFoundException, IOException {
 
 		String message = snakesAndLader.toStringScoreTable();
-
+		snakesAndLader.loadData();
 		System.out.println("-----------------------------------"
 				+ "\n           PUNTUACIONES\n-----------------------------------\n"+ message +"\n-----------------------------------");
 	}

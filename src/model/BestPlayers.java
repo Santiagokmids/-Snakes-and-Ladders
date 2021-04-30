@@ -1,6 +1,13 @@
 package model;
 
-public class BestPlayers {
+import java.io.Serializable;
+
+public class BestPlayers implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	private String name;
 	private int row;
@@ -10,13 +17,13 @@ public class BestPlayers {
 	private int players;
 	
 	private long score;
-	private String symbol;
+	private char symbol;
 	private String otherPlayers;
 	
 	private BestPlayers next;
 	private BestPlayers previous;
 	
-	public BestPlayers(String name, int row, int col, int snakes, int ladders, int players, long score, String symbol, String otherPlayers) {
+	public BestPlayers(String name, int row, int col, int snakes, int ladders, int players, long score, char symbol, String otherPlayers) {
 		this.name = name;
 		this.row = row;
 		this.col = col;
@@ -44,11 +51,11 @@ public class BestPlayers {
 		this.score = score;
 	}
 
-	public String getSymbol() {
+	public char getSymbol() {
 		return symbol;
 	}
 
-	public void setSymbol(String symbol) {
+	public void setSymbol(char symbol) {
 		this.symbol = symbol;
 	}
 	
@@ -119,7 +126,7 @@ public class BestPlayers {
 	public String toString() {
 		String message = "";
 		
-		message = "Nick: "+name+" Ficha: "+symbol+" Puntaje: "+score;
+		message = "Nick: "+name+" | Ficha: "+symbol+" | Puntaje: "+score;
 		
 		return message;
 	}

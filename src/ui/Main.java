@@ -6,7 +6,7 @@ public class Main {
 	
 	private static Menu menu;
 	
-	public static void main(String[] args) throws IOException, InterruptedException{
+	public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException{
 		Main objMain = new Main();
 		menu = new Menu();
 		objMain.getMenu();
