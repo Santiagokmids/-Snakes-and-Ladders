@@ -1013,14 +1013,15 @@ public class SnakesAndLadders{
 
 		if(player != null) {
 			message += player.toString();
+			
+			if(player.getPrevious() != null) {
+				message += "\n" + toStringScores(player.getPrevious());
+			}
 
 			if(player.getNext() != null) {
 				message += "\n" + toStringScores(player.getNext());
 			}
 			
-			if(player.getPrevious() != null) {
-				message += "\n" + toStringScores(player.getPrevious());
-			}
 		}
 
 		return message;
