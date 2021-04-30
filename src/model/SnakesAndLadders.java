@@ -586,8 +586,6 @@ public class SnakesAndLadders {
 				current.setNext(player);
 			}
 		}else {
-			player.setPosition(current.getPosition());
-			current.setPosition(player.getPosition());
 			node.setFirst(player);
 			node.getFirst().setNext(current);
 		}
