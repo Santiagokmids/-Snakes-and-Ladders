@@ -125,7 +125,7 @@ public class Menu {
 		}
 	}
 	
-	private void simulation() throws InterruptedException, IOException {
+	private void simulation() throws InterruptedException, IOException, ClassNotFoundException {
 		
 		String message = snakesAndLader.moveplayer();
 		
