@@ -479,9 +479,7 @@ public class SnakesAndLadders {
 
 			if(player != null) {
 				message = movePlayer(player);
-				System.out.println(player.getMovement());
 				player.setMovement(player.getMovement()+1);
-				System.out.println(player.getMovement());
 			}else {
 				message = moveplayer();
 			}
@@ -496,9 +494,9 @@ public class SnakesAndLadders {
 		int die = random();
 
 		boolean verify = move(current,die);
-		
+
 		message = "El jugador "+current.getSymbol()+" ha lanzado el dado y obtuvo el puntaje "+die+"\n";
-		
+
 		if(verify) {
 			message = "\nEl jugador "+current.getSymbol()+" ha ganado el juego, con "+current.getMovement()+" movimientos\n";
 		}
@@ -507,7 +505,7 @@ public class SnakesAndLadders {
 	}
 
 	private boolean move(Player current, int die) {
-		
+
 		boolean verify = false;
 
 		Node node = searchNode(current);
@@ -586,8 +584,6 @@ public class SnakesAndLadders {
 				current.setNext(player);
 			}
 		}else {
-			player.setPosition(current.getPosition());
-			current.setPosition(player.getPosition());
 			node.setFirst(player);
 			node.getFirst().setNext(current);
 		}
@@ -811,9 +807,23 @@ public class SnakesAndLadders {
 
 		Player player = null;
 
-		if(baseNode.getFirst() != null && baseNode.getFirst().getPosition() == current) {
-			player = baseNode.getFirst();
+		if(baseNode.getFirst() != null) {
+
+			player = findPlayerCurrent(current,baseNode.getFirst());
 		}
+		return player;
+	}
+
+	private Player findPlayerCurrent(int position, Player current) {
+
+		Player player = null;
+
+		if(current.getPosition() == position) {
+			player = current;
+		}else if(current.getNext() != null){
+			findPlayerCurrent(position,current.getNext());
+		}
+
 		return player;
 	}
 
