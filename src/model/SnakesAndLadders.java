@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class SnakesAndLadders{
 
-	public final static String SAVE_PATH_FILE_PEOPLE = "data/scores.txt";
+	public final static String SAVE_PATH_FILE_PEOPLE = "data/scores.sal";
 	
 	private Node root;
 	private BestPlayers firstPlayer;
@@ -21,7 +21,6 @@ public class SnakesAndLadders{
 	private int ladders;
 	private int players;
 	private String symbols;
-	private BestPlayers bestPlayers;
 	
 	private static int verify = 0;
 	private static int numberPlayer;
@@ -32,7 +31,6 @@ public class SnakesAndLadders{
 		this.matrixRows = matrixRows;
 		this.matrixCols = matrixCols;
 		snakes = 0;
-		bestPlayers = null;
 		ladders= 0;
 		players = 0;
 		symbols = "";
@@ -82,7 +80,7 @@ public class SnakesAndLadders{
 	public void addPlayer(String name, int row, int col, int snakes, int ladders, int players, long score, char symbol, String otherPlayers) throws IOException {
 			
 		BestPlayers newPlayer = new BestPlayers(name,row,col,snakes,ladders,players,score,symbol,otherPlayers);
-		bestPlayers = newPlayer; 
+
 		if(firstPlayer == null) {
 			firstPlayer = newPlayer;
 		}else {
@@ -90,16 +88,7 @@ public class SnakesAndLadders{
 		}
 		saveData();
 	}
-	
-	private void asignBest() {
-		
-		if(firstPlayer == null) {
-			firstPlayer = bestPlayers;
-		}else {
-			addPlayer(firstPlayer,bestPlayers);
-		}
-	}
-	
+
 	private void asingPosition(int position, int i,int j) {
 
 		Node newNode = searchNode(i,j);
@@ -135,16 +124,16 @@ public class SnakesAndLadders{
 	private void addPlayer(BestPlayers current, BestPlayers newPlayer) {
 
 		if(newPlayer.getScore() <= current.getScore()){
-			if(current.getNext() == null) {
-				current.setNext(newPlayer);
-			}else {
-				addPlayer(current.getNext(),newPlayer);
-			}
-		}else {
 			if(current.getPrevious() == null) {
 				current.setPrevious(newPlayer);
 			}else {
 				addPlayer(current.getPrevious(),newPlayer);
+			}
+		}else {
+			if(current.getNext() == null) {
+				current.setNext(newPlayer);
+			}else {
+				addPlayer(current.getNext(),newPlayer);
 			}
 		}
 	}
@@ -1006,9 +995,10 @@ public class SnakesAndLadders{
 		return message;
 	}
 
-	public String toStringScoreTable() {
+	public String toStringScoreTable() throws ClassNotFoundException, IOException {
 		String message;
-
+		loadData();
+		
 		if(firstPlayer != null) {
 			message = toStringScores(firstPlayer);
 		}else {
@@ -1022,10 +1012,14 @@ public class SnakesAndLadders{
 		String message = "";
 
 		if(player != null) {
-			message = player.toString();
+			message += player.toString();
 
 			if(player.getNext() != null) {
 				message += "\n" + toStringScores(player.getNext());
+			}
+			
+			if(player.getPrevious() != null) {
+				message += "\n" + toStringScores(player.getPrevious());
 			}
 		}
 
@@ -1069,7 +1063,7 @@ public class SnakesAndLadders{
 
 		if(scores.exists()){
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(scores));
-			bestPlayers = (BestPlayers) ois.readObject();
+			firstPlayer = (BestPlayers) ois.readObject();
 			ois.close();
 		}
 	}
@@ -1077,8 +1071,7 @@ public class SnakesAndLadders{
 	public void saveData() throws IOException {
 
 		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(SAVE_PATH_FILE_PEOPLE));
-		oos.writeObject(bestPlayers);
-
+		oos.writeObject(firstPlayer);
 		oos.close();
 	}
 
