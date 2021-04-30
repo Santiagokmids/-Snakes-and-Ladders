@@ -9,7 +9,11 @@ public class SnakesAndLadders {
 
 	private int matrixRows;
 	private int matrixCols;
-
+	private int snakes;
+	private int ladders;
+	private int players;
+	private String symbols;
+	
 	private static int verify = 0;
 	private static int numberPlayer;
 	private static int numberPlayerVerify;
@@ -18,6 +22,10 @@ public class SnakesAndLadders {
 	public SnakesAndLadders(int matrixRows, int matrixCols) {
 		this.matrixRows = matrixRows;
 		this.matrixCols = matrixCols;
+		snakes = 0;
+		ladders= 0;
+		players = 0;
+		symbols = "";
 		createNewMatrix();
 	}
 
@@ -478,8 +486,9 @@ public class SnakesAndLadders {
 			Player player = findPlayer(numberPlayerVerify);
 
 			if(player != null) {
-				message = movePlayer(player);
+				
 				player.setMovement(player.getMovement()+1);
+				message = movePlayer(player);
 			}else {
 				message = moveplayer();
 			}
@@ -758,7 +767,6 @@ public class SnakesAndLadders {
 			currentPlayer = player;
 			currentPlayer.setMovement(current.getMovement());
 			currentPlayer.setPosition(current.getPosition());
-
 			if(baseNode.getFirst().getNext() == null) {
 				baseNode.setFirst(null);
 			}else {
@@ -856,6 +864,78 @@ public class SnakesAndLadders {
 
 	public void setMatrixCols(int matrixCols) {
 		this.matrixCols = matrixCols;
+	}
+
+	public BestPlayers getFirstPlayer() {
+		return firstPlayer;
+	}
+
+	public void setFirstPlayer(BestPlayers firstPlayer) {
+		this.firstPlayer = firstPlayer;
+	}
+
+	public int getSnakes() {
+		return snakes;
+	}
+
+	public void setSnakes(int snakes) {
+		this.snakes = snakes;
+	}
+
+	public int getLadders() {
+		return ladders;
+	}
+
+	public void setLadders(int ladders) {
+		this.ladders = ladders;
+	}
+
+	public int getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(int players) {
+		this.players = players;
+	}
+
+	public String getSymbols() {
+		return symbols;
+	}
+
+	public void setSymbols(String symbols) {
+		this.symbols = symbols;
+	}
+
+	public static int getVerify() {
+		return verify;
+	}
+
+	public static void setVerify(int verify) {
+		SnakesAndLadders.verify = verify;
+	}
+
+	public static int getNumberPlayer() {
+		return numberPlayer;
+	}
+
+	public static void setNumberPlayer(int numberPlayer) {
+		SnakesAndLadders.numberPlayer = numberPlayer;
+	}
+
+	public static int getNumberPlayerVerify() {
+		return numberPlayerVerify;
+	}
+
+	public static void setNumberPlayerVerify(int numberPlayerVerify) {
+		SnakesAndLadders.numberPlayerVerify = numberPlayerVerify;
+	}
+
+	public static Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public static void setCurrentPlayer(Player currentPlayer) {
+		SnakesAndLadders.currentPlayer = currentPlayer;
 	}
 
 	public String toString() {
