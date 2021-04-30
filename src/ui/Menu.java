@@ -15,25 +15,25 @@ public class Menu {
 	private static BufferedReader br;
 	private SnakesAndLadders snakesAndLader;
 	
-	public Menu() throws IOException {
+	public Menu() throws IOException, InterruptedException {
 		snakesAndLader = new SnakesAndLadders(0, 0);
 		br = new BufferedReader(new InputStreamReader(System.in));
 		startApp();
 	}
 	
-	public void startApp() throws IOException{
+	public void startApp() throws IOException, InterruptedException{
 		System.out.println("==================================\n           BIENVENIDOS  \n==================================\n");
 		menu();
 	}
 
-	public void menu() throws IOException {
+	public void menu() throws IOException, InterruptedException {
 		System.out.println("----------------------------------"
 				+ "\n      MENU DE OPCIONES\n----------------------------------\n1. Iniciar juego\n2. Puntuaciones\n"
 				+ "3. Salir de la aplicación\n4. Creditos\n----------------------------------");
 		selectOption();
 	}
 
-	public void selectOption() throws IOException {
+	public void selectOption() throws IOException, InterruptedException {
 
 		System.out.println("\nIngrese un numero para elegir la opcion");
 		String number = br.readLine();
@@ -75,7 +75,7 @@ public class Menu {
 		br.close();
 	}
 
-	public void selectOpt1() throws IOException {
+	public void selectOpt1() throws IOException, InterruptedException {
 		System.out.println("\nIngrese los siguientes datos separandolos por espacios:\n"
 				+ "Numero de filas, numero de columnas, numero de serpientes, numero de escaleras, numero de jugadores, simbolos de cada jugador\n"
 				+ "--- Los simbolos de cada jugador van juntos, y si no agrega ninguno, se seleccionaran de forma aleatoria. No se pueden repetir simbolos ---\n"
@@ -93,7 +93,7 @@ public class Menu {
 		}
 	}
 	
-	public void gamePlay() throws IOException {
+	public void gamePlay() throws IOException, InterruptedException {
 		
 		String nextLine = br.readLine();
 		
@@ -112,12 +112,26 @@ public class Menu {
 			System.out.println(snakesAndLader.toString());
 			gamePlay();
 		}else if(nextLine.equalsIgnoreCase(SIMUL)) {
-			System.out.println("Simulacion");
+			simulation();
 		}else if(nextLine.equalsIgnoreCase(MENU)) {
 			menu();
 		}else {
 			System.out.println("Ingreso una opcion invalida, ingrese nuevamente");
 			gamePlay();
+		}
+	}
+	
+	private void simulation() throws InterruptedException, IOException {
+		
+		String message = snakesAndLader.moveplayer();
+		
+		if(message.substring(message.length()-2).equals("s\n")) {
+			System.out.println(message);
+		}else {
+			System.out.println(message);
+			System.out.println(snakesAndLader.toString2());
+			Thread.sleep(2000);
+			simulation();
 		}
 	}
 

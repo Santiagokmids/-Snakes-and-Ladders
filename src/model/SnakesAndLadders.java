@@ -68,6 +68,19 @@ public class SnakesAndLadders {
 			createNewCol(i, 1+j, current, rowPrevious);
 		}
 	}
+	
+	public String simulation() throws InterruptedException {
+		
+		String message = "";
+		
+		message = moveplayer();
+		
+		
+		
+		message = simulation();
+		
+		return message;
+	}
 
 	public void addPlayer(String name, int row, int col, int snakes, int ladders, int players, long score, String symbol, String otherPlayers) {
 
