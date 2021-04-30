@@ -88,7 +88,25 @@ public class SnakesAndLadders{
 		}
 		saveData();
 	}
-
+	
+	public String searchInOrder() throws ClassNotFoundException, IOException {
+		loadData();
+		return searchInOrder(firstPlayer);
+	}
+	
+	public String searchInOrder(BestPlayers player) {
+		
+		String message = "";
+		
+		if(player != null) {
+			message += searchInOrder(player.getPrevious());
+			message += player.toString();
+			message += searchInOrder(player.getNext());
+		}
+		
+		return message;
+	}
+	
 	private void asingPosition(int position, int i,int j) {
 
 		Node newNode = searchNode(i,j);
@@ -992,37 +1010,6 @@ public class SnakesAndLadders{
 			message = current.toString();
 			message += toStringCol(current.getNext());
 		}
-		return message;
-	}
-
-	public String toStringScoreTable() throws ClassNotFoundException, IOException {
-		String message;
-		loadData();
-		
-		if(firstPlayer != null) {
-			message = toStringScores(firstPlayer);
-		}else {
-			message = "---No hay ningun puntaje todavia---";
-		}
-
-		return message;
-	}
-
-	private String toStringScores(BestPlayers player) {
-		String message = "";
-
-		if(player != null) {
-			message += player.toString();
-
-			if(player.getNext() != null) {
-				message += "\n" + toStringScores(player.getNext());
-			}
-			
-			if(player.getPrevious() != null) {
-				message += "\n" + toStringScores(player.getPrevious());
-			}
-		}
-
 		return message;
 	}
 
