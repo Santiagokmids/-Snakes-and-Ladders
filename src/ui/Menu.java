@@ -7,11 +7,11 @@ import java.io.InputStreamReader;
 import model.SnakesAndLadders;
 
 public class Menu {
-	
+
 	public final static String MENU = "menu";
 	public final static String SIMUL = "simul";
 	public final static String NUM ="num";
-	
+
 	private static BufferedReader br;
 	private SnakesAndLadders snakesAndLader;
 
@@ -20,7 +20,7 @@ public class Menu {
 		br = new BufferedReader(new InputStreamReader(System.in));
 		startApp();
 	}
-	
+
 	public void startApp() throws IOException, InterruptedException, ClassNotFoundException{
 		System.out.println("==================================\n           BIENVENIDOS  \n==================================\n");
 		menu();
@@ -93,25 +93,26 @@ public class Menu {
 			gamePlay();
 		}
 	}
-	
-	public void gamePlay() throws IOException, InterruptedException, ClassNotFoundException {
-		
+
+	public void gamePlay() throws InterruptedException, IOException, ClassNotFoundException {
+
 		String nextLine = br.readLine();
-		
+
 		if(nextLine.isEmpty()) {
 			String message =snakesAndLader.moveplayer();
-			
+
 			if(message.substring(message.length()-2).equals("s\n")) {
 				System.out.println(message);
 				System.out.println("Esciba el nickName del ganador\n");
 				String nick = br.readLine();
 				snakesAndLader.asignName(nick);
+				
 			}else {
 				System.out.println(message);
 				System.out.println(snakesAndLader.toString2());
 				gamePlay();
 			}
-			
+
 		}else if(nextLine.equalsIgnoreCase(NUM)) {
 			System.out.println(snakesAndLader.toString());
 			gamePlay();
@@ -124,11 +125,11 @@ public class Menu {
 			gamePlay();
 		}
 	}
-	
+
 	private void simulation() throws InterruptedException, IOException, ClassNotFoundException {
-		
+
 		String message = snakesAndLader.moveplayer();
-		
+
 		if(message.substring(message.length()-2).equals("s\n")) {
 			System.out.println(message);
 			System.out.println("Esciba el nickName del ganador\n");
@@ -144,8 +145,14 @@ public class Menu {
 
 	public void scores() throws ClassNotFoundException, IOException {
 
-		String message = snakesAndLader.searchInOrder();
-		snakesAndLader.loadData();
+		String message;
+
+			message = snakesAndLader.searchInOrder();
+			boolean verify = snakesAndLader.loadData();
+			if(!verify) {
+				message = "NO HAY PUNTUACIONES GUARDADAS";
+			}
+			
 		System.out.println("-----------------------------------"
 				+ "\n           PUNTUACIONES\n-----------------------------------\n"+ message +"\n-----------------------------------");
 	}
