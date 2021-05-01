@@ -1015,6 +1015,38 @@ public class SnakesAndLadders{
 		return message;
 	}
 
+	public String toStringScoreTable() throws ClassNotFoundException, IOException {
+		String message;
+		loadData();
+		
+		if(firstPlayer != null) {
+			message = toStringScores(firstPlayer);
+		}else {
+			message = "---No hay ningun puntaje todavia---";
+		}
+
+		return message;
+	}
+
+	private String toStringScores(BestPlayers player) {
+		String message = "";
+
+		if(player != null) {
+			message += player.toString();
+			
+			if(player.getPrevious() != null) {
+				message += "\n" + toStringScores(player.getPrevious());
+			}
+
+			if(player.getNext() != null) {
+				message += "\n" + toStringScores(player.getNext());
+			}
+			
+		}
+
+		return message;
+	}
+
 	public String toString2() {
 		String message = "";
 
