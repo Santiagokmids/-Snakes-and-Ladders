@@ -6,6 +6,8 @@
 
 * Operating system: Windows 10
 
+* File with project documentation: https://bit.ly/2QCis6n
+
 * Project carried out by: 
 
   Luis Miguel Ossa -> https://github.com/Itsumohitoride
