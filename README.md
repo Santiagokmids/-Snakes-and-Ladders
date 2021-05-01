@@ -14,7 +14,7 @@
 
   Santiago Trochez Velasco -> https://github.com/Santiagokmids
 
-* Descripción / Description:
+* Description:
 
 Snakes and ladders is a famous board game, in which the objective is to get your token to the last position on the game board. Each player has a token, which is differentiated by a symbol, and for this position to advance on the game board, he must roll a dice to determine how many positions the player who rolled the dice will advance.
 
