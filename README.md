@@ -13,6 +13,8 @@
   Luis Miguel Ossa -> https://github.com/Itsumohitoride
 
   Santiago Trochez Velasco -> https://github.com/Santiagokmids
+  
+* Changelog: https://bit.ly/3valQUX 
 
 * Description:
 
