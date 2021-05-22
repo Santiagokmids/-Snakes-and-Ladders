@@ -32,7 +32,7 @@ public class BestPlayers implements Serializable{
 	private BestPlayers previous;
 	
 	/** 
-	 *Name: BestPlayers.
+	 *<b>name:</b>  BestPlayers.
 	 *Constructor of BestPlayers <br> 
 	 *<b> post: </b> Start the class BestPlayers.
 	 *@param name. Name of the winning player.
@@ -58,7 +58,7 @@ public class BestPlayers implements Serializable{
 	}
 	
 	/** 
-     *Name: getName.
+     *<b>name:</b>  getName.
      *Get the name of the winning player.<br> 
      *<b> post: </b> The name of the winning player.
      *@return String name. This is the name of the winning player.
@@ -68,7 +68,7 @@ public class BestPlayers implements Serializable{
 	}
 	
 	/** 
-     *Name: setName.
+     *<b>name:</b>  setName.
      *Change the name of the winning player.<br> 
      *<b> post: </b> New name of the winning player.
      *@param name. This is the new name of the winning player.
@@ -78,7 +78,7 @@ public class BestPlayers implements Serializable{
 	}
 	
 	/** 
-     *Name: getScore.
+     *<b>name:</b>  getScore.
      *Get the scores of the winning player.<br> 
      *<b> post: </b> The score of the winning player.
      *@return long score. This is the score of the winning player.
@@ -88,7 +88,7 @@ public class BestPlayers implements Serializable{
 	}
 	
 	/** 
-     *Name: setScore.
+     *<b>name:</b>  setScore.
      *Change the score of the winning player.<br> 
      *<b> post: </b> New score of the winning player.
      *@param score. This is the new score of the winning player.
@@ -98,7 +98,7 @@ public class BestPlayers implements Serializable{
 	}
 	
 	/** 
-     *Name: getSymbol.
+     *<b>name:</b>  getSymbol.
      *Get the symbol of the winning player.<br> 
      *<b> post: </b> The symbol of the winning player.
      *@return char symbol. This is the symbol of the winning player.
@@ -108,7 +108,7 @@ public class BestPlayers implements Serializable{
 	}
 	
 	/** 
-     *Name: setSymbol.
+     *<b>name:</b>  setSymbol.
      *Change the symbol of the winning player.<br> 
      *<b> post: </b> New symbol of the winning player.
      *@param symbol. This is the new symbol of the winning player.
@@ -118,7 +118,7 @@ public class BestPlayers implements Serializable{
 	}
 	
 	/** 
-     *Name: getNext.
+     *<b>name:</b>  getNext.
      *Get the next player to the winning player.<br> 
      *<b> post: </b> The next player to the winning player.
      *@return BestPlayers next. This is the next player to the winning player.
@@ -128,7 +128,7 @@ public class BestPlayers implements Serializable{
 	}
 	
 	/** 
-     *Name: setNext.
+     *<b>name:</b>  setNext.
      *Change the next player to the winning player.<br> 
      *<b> post: </b> New next player to the winning player.
      *@param next. This is the next player to the winning player.
@@ -138,7 +138,7 @@ public class BestPlayers implements Serializable{
 	}
 	
 	/** 
-     *Name: getPrevious.
+     *<b>name:</b>  getPrevious.
      *Get the previous player to the winning player.<br> 
      *<b> post: </b> The previous player to the winning player.
      *@return BestPlayers previous. This is the previous player to the winning player.
@@ -148,7 +148,7 @@ public class BestPlayers implements Serializable{
 	}
 	
 	/** 
-     *Name: setPrevious.
+     *<b>name:</b>  setPrevious.
      *Change the previous player to the winning player.<br> 
      *<b> post: </b> New previous player to the winning player.
      *@param previous. This is the previous player to the winning player.
@@ -158,7 +158,7 @@ public class BestPlayers implements Serializable{
 	}
 	
 	/** 
-     *Name: getRow.
+     *<b>name:</b>  getRow.
      *Get the rows of the matrix in game of the player to the winning player.<br> 
      *<b> post: </b> The rows of the matrix in game of the player to the winning player.
      *@return int row. This are the rows of the matrix in game of the winning player.
@@ -168,7 +168,7 @@ public class BestPlayers implements Serializable{
 	}
 	
 	/** 
-     *Name: getCol.
+     *<b>name:</b>  getCol.
      *Get the columns of the matrix in game of the player to the winning player.<br> 
      *<b> post: </b> The columns of the matrix in game of the player to the winning player.
      *@return int col. This are the columns of the matrix in game of the winning player.
@@ -178,7 +178,7 @@ public class BestPlayers implements Serializable{
 	}
 	
 	/** 
-     *Name: getSnakes.
+     *<b>name:</b>  getSnakes.
      *Get the snakes of the matrix in game of the player to the winning player.<br> 
      *<b> post: </b> The snakes of the matrix in game of the player to the winning player.
      *@return int snakes. This are the snakes of the matrix in game of the winning player.
@@ -188,7 +188,7 @@ public class BestPlayers implements Serializable{
 	}
 	
 	/** 
-     *Name: getLadders.
+     *<b>name:</b>  getLadders.
      *Get the ladders of the matrix in game of the player to the winning player.<br> 
      *<b> post: </b> The ladders of the matrix in game of the player to the winning player.
      *@return int ladders. This are the ladders of the matrix in game of the winning player.
@@ -198,7 +198,7 @@ public class BestPlayers implements Serializable{
 	}
 
 	/** 
-     *Name: getPlayers.
+     *<b>name:</b>  getPlayers.
      *Get the number of players in game of the player to the winning player.<br> 
      *<b> post: </b> The number of players in game of the player to the winning player.
      *@return int players. This is the number of players in game of the winning player.
@@ -208,7 +208,7 @@ public class BestPlayers implements Serializable{
 	}
 
 	/** 
-     *Name: getOtherPlayers.
+     *<b>name:</b>  getOtherPlayers.
      *Get the symbol of players in game of the player to the winning player.<br> 
      *<b> post: </b> The symbol of players in game of the player to the winning player.
      *@return String otherPlayers. This are the symbol of players in game of the winning player.
@@ -218,7 +218,7 @@ public class BestPlayers implements Serializable{
 	}
 	
 	/** 
-     *Name: toString.
+     *<b>name:</b>  toString.
      *Show the best players of the game.<br> 
      *<b> post: </b> Information the best players of the game.
      *@return String message. This is the message where is the information the best players of the game.

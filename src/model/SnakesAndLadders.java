@@ -8,10 +8,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Random;
 
+/**
+ * This class contains methods, attributes,  and relations of a snakes and ladders.
+ * @version 1
+ * @author Santiago Trochez Velasco, https://github.com/Santiagokmids <br>
+ * @author Luis Miguel Ossa Arias, https://github.com/Itsumohitoride <br>
+ * Based on the linked matrix of https://github.com/seyerman
+ */
+
 public class SnakesAndLadders{
 
 	public final static String SAVE_PATH_FILE_PEOPLE = "data/scores.sal";
-	
+
 	private Node root;
 	private BestPlayers firstPlayer;
 
@@ -21,11 +29,19 @@ public class SnakesAndLadders{
 	private int ladders;
 	private int players;
 	private String symbols;
-	
+
 	private static int verify = 0;
 	private static int numberPlayer;
 	private static int numberPlayerVerify;
 	private static Player currentPlayer;
+	
+	/**
+	 * <b>name:</b> SnakesAndLadders <br>
+	 * Create an object snakes and ladders. <br>
+	 * <b>post:</b>> An object snakes and ladders has created. <br>
+	 * @param matrixRows is the number of rows. matrixRows grater than 0.
+	 * @param matrixCols is the number of columns. matrixCols grater than 0.
+	 */
 
 	public SnakesAndLadders(int matrixRows, int matrixCols) {
 		this.matrixRows = matrixRows;
@@ -36,6 +52,12 @@ public class SnakesAndLadders{
 		symbols = "";
 		createNewMatrix();
 	}
+	
+	/**
+	 * <b>name:</b>> createNewMatrix. <br>
+	 * Create a new matrix to the game. <br>
+	 * <b>post:</b>> A new matrix for the game has been created. <br>
+	 */
 
 	private void createNewMatrix() {
 
@@ -45,6 +67,15 @@ public class SnakesAndLadders{
 		createNewRow(0,0,root);
 		asingPosition(0,matrixRows-1,0);
 	}
+	
+	/**
+	 * <b>name:</b> createNewRow. <br>
+	 * Create the rows of the matrix. <br>
+	 * <b>post:</b> The rows of the matrix has been added. <br>  
+	 * @param i is the first position to know where the new row was added. i greater than 0.
+	 * @param j is the second position to know where the new row was added. j greater than 0.
+	 * @param currentRootRow is the node that will be changing. currentRootRow != null y currentRootRow != "".
+	 */
 
 	private void createNewRow(int i, int j, Node currentRootRow) {
 
@@ -58,6 +89,16 @@ public class SnakesAndLadders{
 			createNewRow(i+1,j,downRootRow);
 		}
 	}
+	
+	/**
+	 * <b>name:</b> createNewCol. <br>
+	 * Create the columns of the matrix.
+	 * <b>post:</b> The columns of the matrix has been added. <br>
+	 * @param i is the first position to know where the new column was added. i greater than 0.
+	 * @param j is the first second to know where the new column was added. j greater than 0.
+	 * @param previous is the node previous to the new node. previous != null.
+	 * @param rowPrevious is the node up to the new node.
+	 */
 
 	private void createNewCol(int i, int j, Node previous, Node rowPrevious) {
 
@@ -76,13 +117,32 @@ public class SnakesAndLadders{
 			createNewCol(i, 1+j, current, rowPrevious);
 		}
 	}
+	
+	/**
+	 * <b>name:</b> addPlayer. <br>
+	 * Save the player who won the game. <br>
+	 * <b>post:</b> the player who won the game has been added. <br>
+	 * @param name is the name of the new player. name != "" y name != null.
+	 * @param row is the size of the rows in the game. row greater than 0.
+	 * @param col is the size of the columns in the game. col greater than 0.
+	 * @param snakes is the number of snakes in the game.
+	 * @param ladders is the number of ladders in the game.
+	 * @param players is the number of players in the game. player greater than 0.
+	 * @param score is the score of the player who won game. 
+	 * @param symbol is the symbol of the player who won game. symbol != "" y symbol != null.
+	 * @param otherPlayers are the symbols of the other player who plays the game.
+	 * @throws IOException <br>
+	 * 		   thrown if an exceptions produced by failed or interrupted I/O operations.
+	 * @throws ClassNotFoundException <br>
+	 * 		   thrown if exception that was raised while loading the class.
+	 */
 
 	public void addPlayer(String name, int row, int col, int snakes, int ladders, int players, long score, char symbol, String otherPlayers) throws IOException, ClassNotFoundException {
-		
+
 		loadData();
-		
+
 		BestPlayers newPlayer = new BestPlayers(name,row,col,snakes,ladders,players,score,symbol,otherPlayers);
-		
+
 		if(firstPlayer == null) {
 			firstPlayer = newPlayer;
 		}else {
@@ -91,24 +151,52 @@ public class SnakesAndLadders{
 		saveData();
 	}
 	
+	/**
+	 * <b>name:</b> searchInOrder. <br>
+	 * Search a player. <br>
+	 * <b>post:</b> A player has been searched in the data. <br>
+	 * @return <code>boolean</code> specifying, is the result to search a player.
+	 * @throws ClassNotFoundException <br> 
+	 *         thrown if exception that was raised while loading the class.
+	 * @throws IOException <br>
+	 * 		   thrown if an exceptions produced by failed or interrupted I/O operations.
+	 */
+
 	public String searchInOrder() throws ClassNotFoundException, IOException {
 		loadData();
 		return searchInOrder(firstPlayer);
 	}
 	
+	/**
+	 * <b>name:</b> searchInOrder. <br>
+	 * Search in order the player who won the game. <br>
+	 * <b>post:</b> The player who won a game has been searched. <br>
+	 * @param player is the player in the root of the binary tree.
+	 * @return <code>String</code> specifying message is the format of the player who won a game.
+	 */
+
 	public String searchInOrder(BestPlayers player) {
-		
+
 		String message = "";
-		
+
 		if(player != null) {
 			message += searchInOrder(player.getPrevious());
 			message += player.toString();
 			message += searchInOrder(player.getNext());
 		}
-		
+
 		return message;
 	}
 	
+	/**
+	 * <b>name:</b> asingPosition. <br>
+	 * Save the position of all the nodes. <br>
+	 * <b>post:</b> the position of all the nodes has been assigned. <br>
+	 * @param position is the position who put in the node. position greater than 0.
+	 * @param i is the first position of the node. position != null.
+	 * @param j is the second position of the node. position != null.
+	 */
+
 	private void asingPosition(int position, int i,int j) {
 
 		Node newNode = searchNode(i,j);
@@ -117,6 +205,14 @@ public class SnakesAndLadders{
 			asingNext(newNode,position+1);
 		}
 	}
+	
+	/**
+	 * <b>name:</b> asingNext. <br>
+	 * Is the method who move to the next node. <br>
+	 * <b>post:</b> Move to the next node. <br> 
+	 * @param newNode is the node that will be changing. newNode != null. 
+	 * @param position is the position who put in the node. position greater than 0.
+	 */
 
 	private void asingNext(Node newNode, int position) {
 
@@ -128,6 +224,14 @@ public class SnakesAndLadders{
 			asingPrev(newNode.getUp(),position+1);
 		}
 	}
+	
+	/**
+	 * <b>name:</b> asingPrev. <br>
+	 * Is the method who move to the previous node. <br>
+	 * <b>post:</b> Move to the previous node. <br>
+	 * @param newNode is the node that will be changing. newNode != null. 
+	 * @param position is the position who put in the node. position greater than 0.
+	 */
 
 	private void asingPrev(Node newNode, int position) {
 
@@ -140,6 +244,14 @@ public class SnakesAndLadders{
 			asingNext(newNode.getUp(),position+1);
 		}
 	}
+	
+	/**
+	 * <b>name:</b> addPlayer. <br>
+	 * Add a player in the binary tree. <br>
+	 * <b>post:</b> The player has been added in the binary tree. <br>
+	 * @param current is the player that will be changing. current != null.
+	 * @param newPlayer is the player who won the game. newPlayer != null.
+	 */
 
 	private void addPlayer(BestPlayers current, BestPlayers newPlayer) {
 
@@ -157,6 +269,14 @@ public class SnakesAndLadders{
 			}
 		}
 	}
+	
+	/**
+	 * <b>name:</b> addSettingSnake. <br>
+	 * Add the first position of the snake. <br>
+	 * <b>post:</b> the first position of the snake has been added. <br>
+ 	 * @param snakes is the representation of the snake.
+	 * @param i is the position of the snake.
+	 */
 
 	public void addSettingSnake(int snakes, int i) {
 
@@ -177,6 +297,14 @@ public class SnakesAndLadders{
 			addSettingSnake(snakes,i);
 		}
 	}
+	
+	/**
+	 * <b>name:</b> addSecondSnake. <br>
+	 * Add the second position of the snake. <br>
+	 * <b>post:</b> the second position of the snake has been added. 
+	 * @param ladder is the node who put the second position of the snake. ladder != null.
+	 * @param row is the row from which the new position is to be searched.
+	 */
 
 	public void addSecondSnake(Node ladder, int row) {
 
@@ -192,6 +320,13 @@ public class SnakesAndLadders{
 			addSecondSnake(ladder,row);
 		}
 	}
+	
+	/**
+	 * <b>name:</b> addSettingLadders. <br>
+	 * Add the first position of the ladder. <br>
+	 * <b>post:</b> the first position of the ladder has been added. <br>
+	 * @param ladders is the representation of the ladder. ladders greater than 0.
+	 */
 
 	public void addSettingLadders(int ladders) {
 
@@ -203,7 +338,6 @@ public class SnakesAndLadders{
 		if(searched.getPosition() != 1 && searched.getPosition() != (matrixCols*matrixRows) && ladders != 0 && searched.getSnake() == ' ' && searched.getLadder() == 0){
 			int letter = (ladders);
 			searched.setLadder(letter);
-
 			addSecondladders(searched,selectedRow);
 
 			addSettingLadders(ladders - 1);
@@ -211,10 +345,18 @@ public class SnakesAndLadders{
 			addSettingLadders(ladders);
 		}
 	}
+	
+	/**
+	 * <b>name:</b> addSecondladders. <br>
+	 * Add the second position of the ladder. <br>
+	 * <b>post:</b> The second position of the ladder has been added. <br>
+	 * @param ladder is the representation of the ladder. ladder greater than 0.
+	 * @param row is the row from which the new position is to be searched.
+	 */
 
 	private void addSecondladders(Node ladder, int row) {
 
-		int selectedRow = (int)Math.floor(Math.random()*(matrixRows-row));
+		int selectedRow = (int)Math.floor(Math.random()*(matrixRows));
 		int selectedCol = (int)Math.floor(Math.random()*matrixCols);
 
 		Node searched = searchNode(selectedRow, selectedCol);
@@ -226,10 +368,29 @@ public class SnakesAndLadders{
 			addSecondladders(ladder,row);
 		}
 	}
+	
+	/**
+	 * <b>name:</b> searchNode. <br>
+	 * Search a node. <br>
+	 * <b>post:</b> A node has been searched. <br>
+	 * @param row is the row of the node to search. row greater or equals to 0.
+	 * @param col is the column of the node to search. col greater or equals to 0.
+	 * @return <code>Node</code> specifying is the result of find an node.
+	 */
 
 	public Node searchNode(int row, int col) {
 		return searchNode(root, row, col);
 	}
+	
+	/**
+	 * <b>name:</b> searchNode. <br>
+	 * Search a node. <br>
+	 * <b>post:</b> A node has been searched. <br>
+	 * @param current is the node that will be changing.
+	 * @param row is the row of the node to search. row greater or equals to 0.
+	 * @param col is the column of the node to search. col greater or equals to 0.
+	 * @return <code>Node</code> specifying searched is the result of find an node.
+	 */
 
 	private Node searchNode(Node current, int row, int col) {
 
@@ -253,6 +414,14 @@ public class SnakesAndLadders{
 
 		return searched;
 	}
+	
+	/**
+	 * <b>name:</b> splitString. <br>
+	 * Split the string with the specification of the game. <br>
+	 * <b>post:</b> Split the specification of the game and add that in the game. <br>
+	 * @param settings is the string with the specification of the game.
+	 * @return <code>boolean</code> specifying stop is the process splitting the string.
+	 */
 
 	public boolean splitString(String settings) {
 
@@ -269,7 +438,7 @@ public class SnakesAndLadders{
 				int ladders = Integer.parseInt(setting[3]);
 				int players = Integer.parseInt(setting[4]);
 
-				if(snakes+ladders < ((row*col)-2)/2) {
+				if(snakes+ladders < (int)((row*col)-2)/2) {
 					matrixRows = row;
 					matrixCols = col;
 					createNewMatrix();
@@ -290,7 +459,7 @@ public class SnakesAndLadders{
 								if(verify == 0) {
 									index = players;
 									int cont = 0;
-									
+
 									setSymbols(setting[5]);
 
 									addSettingPlayers(getFirst().getFirst(),setting[5], index, cont);
@@ -339,8 +508,17 @@ public class SnakesAndLadders{
 		return stop;
 	}
 	
+	/**
+	 * <b>name:</b> asignPlayers. <br>
+	 * Add symbol for the players. <br> 
+	 * <b>post:</b> The symbol for the players has been added. <br>
+	 * @param player is the player to whom the symbol is assigned. player != null.
+	 * @param play is the number of players.
+	 * @param players is the string of the players. players != null y players != "".
+	 */
+
 	private void asignPlayers(Player player,int play,String players) {
-		
+
 		if(player != null && play >= 0) {
 			players += player.getSymbol();
 			if(player.getNext() != null) {
@@ -348,12 +526,28 @@ public class SnakesAndLadders{
 			}
 		}
 	}
+	
+	/**
+	 * <b>name:</b> verifySymbols. <br>
+	 * Verify the symbols of the players. <br>
+	 * <b>post:</b> the symbols of the players has been verify. <br>
+	 * @param players is the number of players.
+	 */
 
 	private void verifySymbols(int players) {
 		if(players >= 10) {
 			verify++;
 		}
 	}
+	
+	/**
+	 * <b>name:</b> insertValuePlayer. <br>
+	 * Insert the order of the players. <br>
+	 * <b>post:</b> The order of the players has been added. <br>
+	 * @param current is the player that will be changing.
+	 * @param i is the number of iteration.
+	 * @param cont is the value of the player.
+	 */
 
 	private void insertValuePlayer(Player current,int i,int cont) {
 
@@ -363,6 +557,16 @@ public class SnakesAndLadders{
 			insertValuePlayer(current.getNext(), i, cont+1);
 		}
 	}
+	
+	/**
+	 * <b>name:</b> addSettingPlayers. <br>
+	 * Add the symbol of a player. <br>
+	 * <b>post:</b> The symbol of the player has been added. <br>
+	 * @param first is the first player.
+	 * @param players is the  number of players.
+	 * @param index	is the number of the iteration.
+	 * @param cont is the number to add the symbol of a player.
+	 */
 
 	private void addSettingPlayers(Player first,String players,int index,int cont) {
 		if(index == players.length() && cont == 0) {
@@ -380,6 +584,14 @@ public class SnakesAndLadders{
 			}
 		}
 	}
+	
+	/**
+	 * <b>name:</b> verifySymbols. <br>
+	 * Verify the symbols of the players. <br>
+	 * <b>post:</b> The symbols of the players has been verifying. <br>
+	 * @param player is the player to verify the symbol.
+	 * @param players is the number of players.
+	 */
 
 	private void verifySymbols(Player player,int players) {
 
@@ -389,11 +601,27 @@ public class SnakesAndLadders{
 		}
 
 	}
+	
+	/**
+	 * <b>name:</b> addSymbols. <br>
+	 * Add the symbol to a player. <br>
+	 * <b>post:</b> The symbol of a player has been added. <br>
+	 * @param index is the number of players. index greater than 0.
+	 */
 
 	public void addSymbols(int index) {
 
 		selectSymbols(getFirst(),getFirst().getFirst(),index);
 	}
+	
+	/**
+	 * <b>name:</b> selectSymbols. <br>
+	 * Select a symbol to add in a player. <br>
+	 * <b>post:</b> A symbol to add in a player has been added. <br>
+	 * @param first is the node with the position (0, n). first != null. 
+	 * @param player is the player to add the symbol. player != null.
+	 * @param index is the number of players.
+	 */
 
 	private void selectSymbols(Node first,Player player,int index) {
 		char symbol = ' ';
@@ -477,6 +705,15 @@ public class SnakesAndLadders{
 			}
 		}
 	}
+	
+	/**
+	 * <b>name:</b> asignSymbol. <br>
+	 * Add the symbol to a player.
+	 * <b>post:</b> a symbol has been added to a player.
+	 * @param player is the player to add the symbol.
+ 	 * @param index is the number of players.
+	 * @param symbol is the symbol to add to a player.
+	 */
 
 	private void asignSymbol(Player player, int index, char symbol) {
 
@@ -492,13 +729,28 @@ public class SnakesAndLadders{
 			}
 		}
 	}
+	
+	/**
+	 * <b>name:</b> searchNext. <br>
+	 * Search a player by the symbol. <br>
+	 * <b>post:</b> A player has been searched. <br>
+	 * @param player is the player to find. 
+	 * @param symbol is the symbol of the player.
+	 */
 
 	public void searchNext(Player player, char symbol) {
 		if(player.getNext() == null) {
 			player.setNext(new Player(symbol));
 		}
 	}
-
+	
+	/**
+	 * <b>name:</b> searchSymbols. <br>
+	 * Search a player by the symbol. <br>
+	 * <b>post:</b> a player has been searched by the symbol. <br>
+	 * @param player is the player to compared.
+	 * @param current is the player to will be changing. 
+	 */
 	private void searchSymbols(Player player,Player current) {
 
 		if(current != null && player != null && player.getSymbol() == (current.getSymbol()) && player.getNext() != current.getNext()) {
@@ -509,6 +761,14 @@ public class SnakesAndLadders{
 		}
 
 	}
+	
+	/**
+	 * <b>name:</b> searchSymbolsAzar. <br>
+	 * Select a symbol at random. <br>
+	 * <b>post:</b> a random symbol has been selected. <br>
+	 * @param player is the player to compared.
+	 * @param current is the player to will be changing. 
+	 */
 	private void searchSymbolsAzar(Player player,Player current) {
 
 		if(current != null && player != null && player.getSymbol() == (current.getSymbol())) {
@@ -518,7 +778,13 @@ public class SnakesAndLadders{
 			searchSymbolsAzar(player.getNext(),current);
 		}
 	}
-
+	
+	/**
+	 * <b>name:</b> moveplayer. <br>
+	 * Send to search to a player for move. <br>
+	 * <b>post:</b> A message have the move of the player. <br>
+	 * @return current is the player to will be changing. 
+	 */
 	public String moveplayer() {
 
 		String message = "";
@@ -532,7 +798,6 @@ public class SnakesAndLadders{
 			Player player = findPlayer(numberPlayerVerify);
 
 			if(player != null) {
-				
 				player.setMovement(player.getMovement()+1);
 				message = movePlayer(player);
 			}else {
@@ -541,7 +806,14 @@ public class SnakesAndLadders{
 		}
 		return message;
 	}
-
+	
+	/**
+	 * <b>name:</b> moveplayer. <br>
+	 * Send to search to a player for move. <br>
+	 * <b>post:</b> A message have the move of the player. <br>
+	 * @param current. Player that is used for compared with other player found.
+	 * @return current is the player to will be changing. 
+	 */
 	public String movePlayer(Player current) {
 
 		String message = "";
@@ -561,7 +833,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: asignName.
+     *<b>name:</b>  asignName.
      *Assigns the name of one player with your score<br> 
      *<b> post: </b> Winning player with their respective score has been added to the scores table.
      *@param name. Name of the winning player.
@@ -579,7 +851,7 @@ public class SnakesAndLadders{
 	}
 
 	/** 
-     *Name: move.
+     *<b>name:</b>  move.
      *Found a player to move depending on the number of dice.<br> 
      *<b> post: </b> The player has been found and will be send to move in the game.
      *@param current. Player current that is wanted for can move.
@@ -603,7 +875,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: movePlayer.
+     *<b>name:</b>  movePlayer.
      *Send a player found to search their position.<br> 
      *<b> post: </b> The position of the player has been found.
      *@param player. Player that is wanted for can move.
@@ -614,7 +886,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: movePlayerNode.
+     *<b>name:</b>  movePlayerNode.
      *Search the node where the player should is.<br> 
      *<b> post: </b> The position where the player should is has been found.
      *@param current. Position where the player will be move.
@@ -641,7 +913,7 @@ public class SnakesAndLadders{
 	}
 
 	/** 
-     *Name: movePlayerPrev.
+     *<b>name:</b>  movePlayerPrev.
      *Search the node where the player should is but to left.<br> 
      *<b> post: </b> The position where the player should is has been found or has been wanted to rigth or up.
      *@param current. Position where the player will be move.
@@ -668,7 +940,7 @@ public class SnakesAndLadders{
 	
 
 	/** 
-     *Name: movePlayerNodeUp.
+     *<b>name:</b>  movePlayerNodeUp.
      *Search the node where the player should is but to up.<br> 
      *<b> post: </b> The position where the player should is has been found to up.
      *@param current. Position where the player will be move.
@@ -683,7 +955,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: movePlayerNodeUp.
+     *<b>name:</b>  movePlayerNodeUp.
      *Search the node where the player should is but up to left.<br> 
      *<b> post: </b> The position where the player should is has been found up to left.
      *@param current. Position where the player will be move.
@@ -698,7 +970,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: moveInOrder.
+     *<b>name:</b>  moveInOrder.
      *Search the player in the lower position of the node for move.<br> 
      *<b> post: </b> The player of the lower position has been found.
      *@param node. Node where the player will be wanted to move.
@@ -720,7 +992,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: findSnakesAndLadders.
+     *<b>name:</b>  findSnakesAndLadders.
      *Search the snakes and ladders with the method nextSnakesAndLadders.<br> 
      *<b> post: </b> The method has send to search the snakes and ladders.
      *@param current. Node where will be wanted the snakes and ladders.
@@ -731,7 +1003,7 @@ public class SnakesAndLadders{
 	}
 
 	/** 
-     *Name: nextSnakesAndLadders.
+     *<b>name:</b>  nextSnakesAndLadders.
      *Search the snakes and ladders to the right.<br> 
      *<b> post: </b> A snake or ladder has been found, then, the player will be moved there. If not, will be wanted to up or left.
      *@param current. Node that will be compared with the other node for search the snakes and ladders.
@@ -741,6 +1013,7 @@ public class SnakesAndLadders{
 	private void nextSnakesAndLadders(Node current, Node node, Player player) {
 
 		if(node.getSnake() != ' ' && node.getSnake() == current.getSnake() && current.getPosition() <= node.getPosition()) {
+
 			if(current.getFirst() == null) {
 				current.setFirst(player);
 			}else {
@@ -780,7 +1053,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: searchLadderNext.
+     *<b>name:</b>  searchLadderNext.
      *Search the ladders to the right.<br> 
      *<b> post: </b> A ladder has been found.
      *@param current. Node that will be compared with the other node for search the ladders.
@@ -803,7 +1076,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: searchLadderPrev.
+     *<b>name:</b>  searchLadderPrev.
      *Search the ladders to the left.<br> 
      *<b> post: </b> A ladder has been found.
      *@param current. Node that will be compared with the other node for search the ladders.
@@ -826,7 +1099,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: prevSanakesAndLadders.
+     *<b>name:</b>  prevSanakesAndLadders.
      *Search the snakes and ladders to the left.<br> 
      *<b> post: </b> A snake or ladder has been found, then, the player will be moved there. If not, will be wanted to up.
      *@param current. Node that will be compared with the other node for search the snakes and ladders.
@@ -874,7 +1147,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: searchNode.
+     *<b>name:</b>  searchNode.
      *Search a node.<br> 
      *<b> post: </b> A node has been found.
      *@param current. Player that will be wanted for their node.
@@ -893,7 +1166,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: nextNode.
+     *<b>name:</b>  nextNode.
      *Search a node to right.<br> 
      *<b> post: </b> A node has been found or has been wanted to left or up.
      *@param current. Player that will be wanted for their node.
@@ -917,7 +1190,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: prevNode.
+     *<b>name:</b>  prevNode.
      *Search a node to left.<br> 
      *<b> post: </b> A node has been found or has been wanted to up.
      *@param current. Player that will be wanted for their node.
@@ -941,7 +1214,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: searchPlayer.
+     *<b>name:</b>  searchPlayer.
      *Search a player by a node.<br> 
      *<b> post: </b> A player has been found.
      *@param current. Player that will be wanted for their node.
@@ -952,13 +1225,14 @@ public class SnakesAndLadders{
 
 		Player player = null;
 
+
 		if(baseNode.getFirst() != null && baseNode.getFirst() == current) {
 
 			player = new Player(current.getSymbol());
 			currentPlayer = player;
 			currentPlayer.setMovement(current.getMovement());
 			currentPlayer.setPosition(current.getPosition());
-			
+
 			if(baseNode.getFirst().getNext() == null) {
 				baseNode.setFirst(null);
 			}else {
@@ -969,7 +1243,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: findPlayer.
+     *<b>name:</b>  findPlayer.
      *Search a player by a position.<br> 
      *<b> post: </b> A player has been found.
      *@param position. Integer that will be compared with the position of the player.
@@ -985,7 +1259,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: findNext.
+     *<b>name:</b>  findNext.
      *Search a the next player on a position by a position.<br> 
      *<b> post: </b> A player has been found.
      *@param position. Integer that will be compared with the position of the player.
@@ -1006,7 +1280,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: findNext.
+     *<b>name:</b>  findNext.
      *Search a the previous player on a position by a position.<br> 
      *<b> post: </b> A player has been found.
      *@param position. Integer that will be compared with the position of the player.
@@ -1027,7 +1301,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: findPlayerToMove.
+     *<b>name:</b>  findPlayerToMove.
      *Search a player that will be moved.<br> 
      *<b> post: </b> A player has been found.
      *@param current. Integer that will be compared with the position of the player.
@@ -1037,7 +1311,7 @@ public class SnakesAndLadders{
 	private Player findPlayerToMove(int current, Node baseNode) {
 
 		Player player = null;
-		
+
 		if(baseNode.getFirst() != null) {
 
 			player = findPlayerCurrent(current,baseNode.getFirst());
@@ -1046,7 +1320,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: findPlayerCurrent.
+     *<b>name:</b>  findPlayerCurrent.
      *Search a player current with a position.<br> 
      *<b> post: </b> A player has been found.
      *@param position. Integer that will be compared with the position of the player.
@@ -1060,14 +1334,14 @@ public class SnakesAndLadders{
 		if(current.getPosition() == position) {
 			player = current;
 		}else if(current.getNext() != null){
-			findPlayerCurrent(position,current.getNext());
+			player = findPlayerCurrent(position,current.getNext());
 		}
 
 		return player;
 	}
 	
 	/** 
-     *Name: random.
+     *<b>name:</b>  random.
      *Choose a number between 1 and 6 for the dice.<br> 
      *<b> post: </b> A number has been assigns.
      *@return int random. Chosen number.
@@ -1080,7 +1354,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: getPlayer.
+     *<b>name:</b>  getPlayer.
      *Get the value of the node root with scores.<br> 
      *<b> post: </b> Root with the scores.
      *@return Node root. This is the node that have the scores.
@@ -1090,7 +1364,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: setRoot.
+     *<b>name:</b>  setRoot.
      *Change the root of the node for the scores.<br> 
      *<b> post: </b> New root of the nodes.
      *@param root. Node that will be the root of the nodes.
@@ -1100,7 +1374,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: getMatrixRows.
+     *<b>name:</b>  getMatrixRows.
      *Get the rows of the matrix.<br> 
      *<b> post: </b> Values of the rows of the matrix.
      *@return int matrixRows. This is the rows of the matrix.
@@ -1110,7 +1384,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: setMatrixRows.
+     *<b>name:</b>  setMatrixRows.
      *Change the rows of the matrix.<br> 
      *<b> post: </b> New rows of the matrix.
      *@param matrixRows. Rows that will be new rows of the matrix.
@@ -1120,7 +1394,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: getMatrixCols.
+     *<b>name:</b>  getMatrixCols.
      *Get the columns of the matrix.<br> 
      *<b> post: </b> Values of the columns of the matrix.
      *@return int getMatrixCols. This is the columns of the matrix.
@@ -1130,7 +1404,7 @@ public class SnakesAndLadders{
 	}
 
 	/** 
-     *Name: setMatrixCols.
+     *<b>name:</b>  setMatrixCols.
      *Change the columns of the matrix.<br> 
      *<b> post: </b> New columns of the matrix.
      *@param matrixCols. Columns that will be new columns of the matrix.
@@ -1140,7 +1414,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: firstPlayer.
+     *<b>name:</b>  firstPlayer.
      *Get the first player of the root of nodes.<br> 
      *<b> post: </b> First player of the root.
      *@return BestPlayers firstPlayer. This is first player of the root.
@@ -1150,7 +1424,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: setFirstPlayer.
+     *<b>name:</b>  setFirstPlayer.
      *Change the first player of the root.<br> 
      *<b> post: </b> New first player of the root.
      *@param firstPlayer. First player of the root.
@@ -1160,7 +1434,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: getSnakes.
+     *<b>name:</b>  getSnakes.
      *Get the snakes that there in game.<br> 
      *<b> post: </b> Snakes in the game.
      *@return int snakes. This are the snakes of the game.
@@ -1170,7 +1444,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: setSnakes.
+     *<b>name:</b>  setSnakes.
      *Change the snakes of the game.<br> 
      *<b> post: </b> New snakes in the game.
      *@param snakes. New snakes for the game.
@@ -1180,7 +1454,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: getLadders.
+     *<b>name:</b>  getLadders.
      *Get the ladders that there in game.<br> 
      *<b> post: </b> Ladders in the game.
      *@return int ladders. This are the ladders of the game.
@@ -1190,7 +1464,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: setLadders.
+     *<b>name:</b>  setLadders.
      *Change the ladders of the game.<br> 
      *<b> post: </b> New ladders in the game.
      *@param ladders. New ladders for the game.
@@ -1200,7 +1474,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: getPlayers.
+     *<b>name:</b>  getPlayers.
      *Get the players that there in game.<br> 
      *<b> post: </b> Players in the game.
      *@return int players. This are the players of the game.
@@ -1210,7 +1484,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: setPlayers.
+     *<b>name:</b>  setPlayers.
      *Change the players of the game.<br> 
      *<b> post: </b> New players in the game.
      *@param players. New players for the game.
@@ -1220,7 +1494,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: getSymbols.
+     *<b>name:</b>  getSymbols.
      *Get the symbols that there in game.<br> 
      *<b> post: </b> Symbols in the game.
      *@return String symbols. This are the symbols of the game.
@@ -1230,7 +1504,7 @@ public class SnakesAndLadders{
 	}
 
 	/** 
-     *Name: setSymbols.
+     *<b>name:</b>  setSymbols.
      *Change the symbols of the game.<br> 
      *<b> post: </b> New symbols in the game.
      *@param symbols. New symbols for the game.
@@ -1240,7 +1514,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: getVerify.
+     *<b>name:</b>  getVerify.
      *Get the value of verify.<br> 
      *<b> post: </b> Value of verify.
      *@return int verify. This is the value of verify.
@@ -1250,7 +1524,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: setVerify.
+     *<b>name:</b>  setVerify.
      *Change the value of verify.<br> 
      *<b> post: </b> New value of verify.
      *@param verify. New the value of verify.
@@ -1260,7 +1534,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: getNumberPlayer.
+     *<b>name:</b>  getNumberPlayer.
      *Get the number of Players in the game.<br> 
      *<b> post: </b> The number of Players in the game.
      *@return int numberPlayer. This is the number of Players in the game.
@@ -1270,7 +1544,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: setVerify.
+     *<b>name:</b>  setVerify.
      *Change the number of Players in the game.<br> 
      *<b> post: </b> New number of Players in the game.
      *@param numberPlayer. New number of Players in the game.
@@ -1280,7 +1554,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: getNumberPlayerVerify.
+     *<b>name:</b>  getNumberPlayerVerify.
      *Get the value for verify the number of Players in the game.<br> 
      *<b> post: </b> The value for verify the number of Players in the game.
      *@return int numberPlayerVerify. This is the value for verify the number of Players in the game.
@@ -1290,7 +1564,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: setNumberPlayerVerify.
+     *<b>name:</b>  setNumberPlayerVerify.
      *Change the value for verify the number of Players in the game.<br> 
      *<b> post: </b> New value for verify the number of Players in the game.
      *@param numberPlayerVerify. New the value for verify the number of Players in the game.
@@ -1300,7 +1574,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-      *Name: toString.
+      *<b>name:</b>  toString.
       *Show the rows of the matrix.<br> 
       *<b> post: </b> Information of the rows of the matrix.
       *@return String message. This is the message where is the information of rows of the matrix.
@@ -1312,7 +1586,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: toStringRow.
+     *<b>name:</b>  toStringRow.
      *Show the rows and columns of the matrix.<br> 
      *<b> post: </b> Information of the rows and columns of the matrix.
      *@return String message. This is the message where is the informations of the rows and columns of the matrix.
@@ -1327,7 +1601,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: toStringCol.
+     *<b>name:</b>  toStringCol.
      *Show the columns of the matrix.<br> 
      *<b> post: </b> Information of the columns of the matrix.
      *@return String message. This is the message where is the information of columns of the matrix.
@@ -1342,7 +1616,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: toStringScoreTable.
+     *<b>name:</b>  toStringScoreTable.
      *Show the score table of the game.<br> 
      *<b> post: </b> Score table of the players of the game.
      *@return String message. This is the message where is the score table of the game.
@@ -1361,7 +1635,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: toStringScores.
+     *<b>name:</b>  toStringScores.
      *Show the scores the game.<br> 
      *<b> post: </b> Scores the players of the game.
      *@return String message. This is the message where is the scores of the players in game.
@@ -1386,7 +1660,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: toString2.
+     *<b>name:</b>  toString2.
      *Show the root of nodes.<br> 
      *<b> post: </b> Information of root of the nodes.
      *@return String message. This is the message where is the information of root of the nodes.
@@ -1400,7 +1674,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: toStringRow2.
+     *<b>name:</b>  toStringRow2.
      *Show the nodes that is down of the rows.<br> 
      *<b> post: </b> The nodes that is down of the rows.
      *@return String message. This is the message where is the nodes that is down f the rows.
@@ -1415,7 +1689,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: toStringCol2.
+     *<b>name:</b>  toStringCol2.
      *Show the nodes that is down of the columns.<br> 
      *<b> post: </b> The nodes that is down of the columns.
      *@return String message. This is the message where is the nodes that is down f the columns.
@@ -1430,7 +1704,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: getFirst.
+     *<b>name:</b>  getFirst.
      *Get the first node of the nodes.<br> 
      *<b> post: </b> The first node.
      *@return Node searchNode. This is the message where is the first node.
@@ -1440,7 +1714,7 @@ public class SnakesAndLadders{
 	}
 	
 	/** 
-     *Name: loadData.
+     *<b>name:</b>  loadData.
      *Load the data of all winning players.<br> 
      *<b> post: </b> The data has been loaded.
      *@throws IOException <br>
@@ -1451,19 +1725,26 @@ public class SnakesAndLadders{
      * @throws ClassNotFoundException <br>
      * 		thrown if the path of file wasn't found. <br>   	
     */
-	public void loadData() throws IOException, ClassNotFoundException{
+	public boolean loadData() {
 
 		File scores = new File(SAVE_PATH_FILE_PEOPLE);
+		boolean verify = true;
 
 		if(scores.exists()){
-			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(scores));
-			firstPlayer = (BestPlayers) ois.readObject();
-			ois.close();
+			try {
+				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(scores));;
+				firstPlayer = (BestPlayers) ois.readObject();
+				
+				ois.close();
+			}catch(ClassNotFoundException | IOException r) {
+				verify = false;
+			}
 		}
+		return verify;
 	}
 	
 	/** 
-     *Name: saveData.
+     *<b>name:</b>  saveData.
      *Save the data of all winning players.<br> 
      *<b> post: </b> The data has been saved.
      *@throws IOException <br>

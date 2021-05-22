@@ -17,7 +17,7 @@ public class Player {
 	private int position;
 	
 	/** 
-	 *Name: Player.
+	 *<b>name:</b>  Player.
 	 *Constructor of Player <br> 
 	 *<b> post: </b> Start the class Player.
 	 *@param c. Character of a player.
@@ -29,7 +29,7 @@ public class Player {
 	}
 	
 	/** 
-     *Name: getMovement.
+     *<b>name:</b>  getMovement.
      *Get the amount of movements of a player.<br> 
      *<b> post: </b> The amount of movements of a player.
      *@return int movement. This is the amount of movements of a player.
@@ -39,7 +39,7 @@ public class Player {
 	}
 	
 	/** 
-     *Name: setMovement.
+     *<b>name:</b>  setMovement.
      *Change the amount of movements of a player.<br> 
      *<b> post: </b> New amount of movements of a player.
      *@param movement. This is the new amount of movements of a player.
@@ -49,7 +49,7 @@ public class Player {
 	}
 	
 	/** 
-     *Name: getNext.
+     *<b>name:</b>  getNext.
      *Get the next player to the player.<br> 
      *<b> post: </b> The next player to the player.
      *@return Player next. This is the next player to the player.
@@ -59,7 +59,7 @@ public class Player {
 	}
 	
 	/** 
-     *Name: setNext.
+     *<b>name:</b>  setNext.
      *Change the next player to the player.<br> 
      *<b> post: </b> New next player to the player.
      *@param next. This is the new next player to the player.
@@ -69,7 +69,7 @@ public class Player {
 	}
 	
 	/** 
-     *Name: getPosition.
+     *<b>name:</b>  getPosition.
      *Get the position of a player.<br> 
      *<b> post: </b> The position of a player.
      *@return int position. This is the position of a player.
@@ -79,7 +79,7 @@ public class Player {
 	}
 	
 	/** 
-     *Name: setPosition.
+     *<b>name:</b>  setPosition.
      *Change the position of a player.<br> 
      *<b> post: </b> New position of a player.
      *@param position. This is the new position of a player.
@@ -89,7 +89,7 @@ public class Player {
 	}
 
 	/** 
-     *Name: getSymbol.
+     *<b>name:</b>  getSymbol.
      *Get the symbol of a player.<br> 
      *<b> post: </b> The symbol of a player.
      *@return char symbol. This is the symbol of a player.
@@ -99,7 +99,7 @@ public class Player {
 	}
 
 	/** 
-     *Name: setSymbol.
+     *<b>name:</b>  setSymbol.
      *Change the symbol of a player.<br> 
      *<b> post: </b> New symbol of a player.
      *@param symbol. This is the new symbol of a player.
