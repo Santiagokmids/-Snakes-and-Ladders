@@ -38,13 +38,9 @@ public class Player {
 		this.position = position;
 	}
 
-
-
 	public char getSymbol() {
 		return symbol;
 	}
-
-
 
 	public void setSymbol(char symbol) {
 		this.symbol = symbol;
